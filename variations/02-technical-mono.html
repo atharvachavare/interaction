@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Direction 02 — Technical Mono</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #ffffff; color: #111827; font-family: 'JetBrains Mono', monospace; }
+    .page { display: flex; flex-direction: column; align-items: center; }
+
+    /* Header — spec-sheet row */
+    .header { width: 100%; max-width: 1920px; border-bottom: 1px solid #111827; }
+    .header__row { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+    .cell { padding: 18px 20px; border-right: 1px solid #e5e7eb; font-size: 12px; line-height: 1.5; }
+    .cell:last-child { border-right: none; }
+    .cell .k { color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; font-size: 10px; display: block; margin-bottom: 6px; }
+    .cell .v { font-weight: 500; }
+    .cell .v b { font-weight: 700; }
+    .cell .v .accent { color: #2563eb; }
+    .wordmark { font-weight: 700; font-size: 15px; letter-spacing: -0.4px; }
+
+    /* Gallery — bordered technical grid with indices */
+    .gallery { display: flex; gap: 0; width: 100%; max-width: 1920px; }
+    .col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; border-right: 1px solid #e5e7eb; }
+    .col:last-child { border-right: none; }
+    .card { position: relative; aspect-ratio: var(--r); border-bottom: 1px solid #e5e7eb; overflow: hidden; background: #fcfcfc; }
+    .card img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .card .idx { position: absolute; top: 10px; left: 12px; font-size: 10px; letter-spacing: 1px; color: #9ca3af; background: rgba(255,255,255,0.85); padding: 2px 5px; border-radius: 2px; z-index: 2; }
+    .card .nm { position: absolute; bottom: 10px; left: 12px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #6b7280; background: rgba(255,255,255,0.85); padding: 2px 5px; border-radius: 2px; z-index: 2; }
+
+    /* Footer */
+    .footer { width: 100%; max-width: 1920px; border-top: 1px solid #111827; display: flex; justify-content: space-between; flex-wrap: wrap; }
+    .footer span { padding: 16px 20px; font-size: 11px; letter-spacing: 0.5px; color: #6b7280; }
+
+    @media (max-width: 1024px) {
+      .gallery { display: block; column-count: 2; column-gap: 0; }
+      .col { display: contents; }
+      .card { break-inside: avoid; border: 1px solid #e5e7eb; }
+    }
+    @media (max-width: 600px) {
+      .gallery { column-count: 1; }
+      .header__row { grid-template-columns: 1fr; }
+      .cell { border-right: none; border-bottom: 1px solid #e5e7eb; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="header">
+      <div class="header__row">
+        <div class="cell"><span class="k">/ Project</span><span class="v"><span class="wordmark">INTERFACE?LAB.</span> &nbsp;v1.0</span></div>
+        <div class="cell"><span class="k">/ Scope</span><span class="v">Shelter for <b>design explorations</b> &amp; <b>prototypes</b></span></div>
+        <div class="cell"><span class="k">/ Author</span><span class="v">All work crafted by <b class="accent">@Atharva Chavare</b></span></div>
+      </div>
+    </header>
+
+    <section class="gallery">
+      <div class="col">
+        <figure class="card" style="--r: 460/461.69"><span class="idx">01</span><span class="nm">Pull To Reload</span><img src="../assets/pull-to-reload.gif" alt="Pull To Reload" /></figure>
+        <figure class="card" style="--r: 460/248.81"><span class="idx">02</span><span class="nm">Stacked Cards v2</span><img src="../assets/stacked-cards-v2.gif" alt="Stacked Cards v2" /></figure>
+        <figure class="card" style="--r: 460/259.83"><span class="idx">03</span><span class="nm">Sticker</span><img src="../assets/sticker.png" alt="Sticker" /></figure>
+      </div>
+      <div class="col">
+        <figure class="card" style="--r: 460/804.98"><span class="idx">04</span><span class="nm">Wallet</span><img src="../assets/wallet.gif" alt="Wallet" /></figure>
+      </div>
+      <div class="col">
+        <figure class="card" style="--r: 460/355.81"><span class="idx">05</span><span class="nm">Folded Email</span><img src="../assets/folded-email.gif" alt="Folded Email" /></figure>
+        <figure class="card" style="--r: 460/366.77"><span class="idx">06</span><span class="nm">Search Input</span><img src="../assets/search-input.gif" alt="Search Input" /></figure>
+      </div>
+      <div class="col">
+        <figure class="card" style="--r: 460/461.69"><span class="idx">07</span><span class="nm">Animated Switch</span><img src="../assets/animated-switch.gif" alt="Animated Switch" /></figure>
+        <figure class="card" style="--r: 460/406.11"><span class="idx">08</span><span class="nm">Folded Email</span><img src="../assets/folded-email-2.gif" alt="Folded Email" /></figure>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>BUILT WITH NEXT.JS + VERCEL</span>
+      <span>© 2026, ATHARVA CHAVARE</span>
+    </footer>
+  </main>
+</body>
+</html>

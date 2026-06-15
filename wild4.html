@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>INTERFACE?LAB. — WILD-4 Flow</title>
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="wild4.css" />
+  <script src="wild4.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__left">
+      <span class="wm">INTERFACE?LAB.</span>
+      <span class="ver">v1.0</span>
+    </div>
+    <span class="credit">All work crafted by <strong>@Atharva Chavare</strong></span>
+  </header>
+
+  <!-- One morphing scene. Start = Flow 1 (hero). End = Flow 2 (grid + headline at bottom). -->
+  <div class="track" id="track">
+    <div class="scene" id="scene">
+      <div class="stage">
+        <div class="gallery-grid" id="grid">
+          <button class="card card--hero" data-key="pull" data-hero="pull">
+            <img src="assets/pull-to-reload.gif" alt="Pull To Reload" />
+            <span class="card__label">Pull To Reload</span>
+          </button>
+          <button class="card card--reveal" data-key="stacked">
+            <img src="assets/stacked-cards-v2.gif" alt="Stacked Cards v2" />
+            <span class="card__label">Stacked Cards v2</span>
+          </button>
+          <button class="card card--hero" data-key="sticker" data-hero="sticker">
+            <img src="assets/sticker.png" alt="Sticker" />
+            <span class="card__label">Sticker</span>
+          </button>
+          <button class="card card--reveal" data-key="folded">
+            <img src="assets/folded-email.gif" alt="Folded Email" />
+            <span class="card__label">Folded Email</span>
+          </button>
+          <button class="card card--reveal" data-key="search">
+            <img src="assets/search-input.gif" alt="Search Input" />
+            <span class="card__label">Search Input</span>
+          </button>
+          <button class="card card--reveal" data-key="switch">
+            <img src="assets/animated-switch.gif" alt="Animated Switch" />
+            <span class="card__label">Animated Switch</span>
+          </button>
+          <button class="card card--wallet card--hero" data-key="wallet" data-hero="wallet">
+            <img src="assets/wallet.gif" alt="Wallet" />
+            <span class="card__label">Wallet</span>
+          </button>
+        </div>
+
+        <h1 class="flow-headline" id="headline">A shelter for design explorations &amp; prototypes.</h1>
+      </div>
+
+      <div class="scrollcue" id="scrollcue"><span>Scroll to explore</span><span class="scrollcue__arrow">↓</span></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span>Built with Next.js + Vercel</span>
+    <span>© 2026, Atharva Chavare</span>
+  </footer>
+
+  <!-- Drawer detail -->
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer__overlay" data-drawer-close></div>
+    <div class="drawer__sheet" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+      <button class="drawer__handle" type="button" aria-label="Drag or click to close" data-drawer-close></button>
+      <button class="drawer__close" type="button" aria-label="Close" data-drawer-close>&times;</button>
+      <div class="drawer__header">
+        <h3 class="drawer__title" id="drawer-title">Component</h3>
+        <p class="drawer__desc" id="drawer-desc"></p>
+        <div class="drawer__tags" id="drawer-tags"></div>
+      </div>
+      <div class="drawer__body">
+        <img class="drawer__media" id="drawer-media" src="" alt="" />
+      </div>
+    </div>
+  </div>
+</body>
+</html>

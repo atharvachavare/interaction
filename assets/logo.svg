@@ -1,0 +1,9 @@
+<svg width="320" height="96" viewBox="0 0 320 96" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="INTERFACE?LAB.">
+  <!-- Dynamic Island mark: rounded pill with inset pill + camera dot -->
+  <rect x="8" y="28" width="72" height="40" rx="20" fill="#111827"/>
+  <rect x="20" y="40" width="28" height="16" rx="8" fill="#ffffff" opacity="0.9"/>
+  <circle cx="62" cy="48" r="7" fill="#3b82f6"/>
+
+  <!-- Wordmark -->
+  <text x="100" y="56" font-family="'JetBrains Mono', monospace" font-size="22" font-weight="700" letter-spacing="-0.5" fill="#111827">INTERFACE<tspan fill="#3b82f6">?</tspan>LAB<tspan fill="#3b82f6">.</tspan></text>
+</svg>

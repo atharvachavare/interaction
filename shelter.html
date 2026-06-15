@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shelter for Design &amp; Interactions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shelter.css" />
+  <script src="shelter.js" defer></script>
+</head>
+<body>
+  <main class="canvas" aria-label="Shelter for Design and Interactions">
+    <div class="composition" id="composition">
+      <div class="phone" id="phone">
+        <div class="phone__device">
+          <svg class="phone__strokes" id="phoneStrokes" viewBox="0 0 393 566.258" aria-hidden="true">
+            <!-- Outer dashed stroke — traces bottom-left → up → right → down -->
+            <path
+              id="strokeOuter"
+              class="stroke-path stroke-path--outer"
+              fill="none"
+              stroke="var(--stroke-outer, #D9D9D9)"
+              stroke-width="1.414"
+              stroke-dasharray="1.41 1.41"
+              vector-effect="non-scaling-stroke"
+            />
+            <!-- Inner grey rings — Figma 1037:725 / 1037:726 -->
+            <path
+              id="strokeRingOuter"
+              class="stroke-path stroke-path--ring"
+              fill="none"
+              stroke="#efefef"
+              stroke-width="1.127"
+              vector-effect="non-scaling-stroke"
+            />
+            <path
+              id="strokeRingInner"
+              class="stroke-path stroke-path--ring"
+              fill="none"
+              stroke="#efefef"
+              stroke-width="1.127"
+              vector-effect="non-scaling-stroke"
+            />
+          </svg>
+
+          <div class="phone__island intro-reveal" id="phoneIsland" data-reveal="0" aria-hidden="true"></div>
+
+          <div class="phone__content" id="phoneContent">
+            <div class="mock-card mock-card--curve intro-reveal" data-reveal="1">
+              <svg class="curve-art" id="curveEditor" viewBox="0 0 146 162" role="img" aria-label="Interactive cubic-bezier easing curve">
+                <path class="curve-frame curve-frame--dashed" id="frameTop"></path>
+                <path class="curve-frame" id="frameBottom"></path>
+                <path class="curve-diag" id="frameDiag"></path>
+                <path class="curve-handle-line" id="handleLine1"></path>
+                <path class="curve-handle-line" id="handleLine2"></path>
+                <path class="curve-path" id="curvePath"></path>
+                <circle class="curve-anchor" id="anchor0" r="3.5"></circle>
+                <circle class="curve-anchor" id="anchor3" r="3.5"></circle>
+                <circle class="curve-ctrl" id="ctrl1" r="8"></circle>
+                <circle class="curve-ctrl" id="ctrl2" r="8"></circle>
+              </svg>
+            </div>
+
+            <div class="mock-card mock-card--stack intro-reveal" data-reveal="2">
+              <p class="stack__title">Tool stack</p>
+              <ul class="stack__list">
+                <li><img class="stack__check" src="assets/check-blue.svg" alt="" width="15" height="15" />Framer Motion</li>
+                <li><img class="stack__check" src="assets/check-blue.svg" alt="" width="15" height="15" />Cursor</li>
+                <li><img class="stack__check" src="assets/check-blue.svg" alt="" width="15" height="15" />Next.js</li>
+                <li><img class="stack__check" src="assets/check-blue.svg" alt="" width="15" height="15" />Vercel</li>
+                <li><img class="stack__check" src="assets/check-blue.svg" alt="" width="15" height="15" />DialKit</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clouds" id="clouds" aria-hidden="true">
+        <div class="clouds__left">
+          <img class="clouds__img" src="assets/cloud-left.png" alt="" width="452" height="249" />
+        </div>
+        <div class="clouds__right">
+          <img class="clouds__img" src="assets/cloud-right.png" alt="" width="402" height="197" />
+        </div>
+      </div>
+
+      <h1 class="headline" id="headline">
+        <span class="headline__line headline__line--dark">Shelter for</span>
+        <span class="headline__line headline__line--blue">Design &amp; Interactions</span>
+      </h1>
+    </div>
+  </main>
+
+  <section class="work" id="showcase" aria-label="Selected work">
+    <ul class="work__grid">
+      <!-- Col 1, spans both rows — phone (Clocks for iOS) -->
+      <li class="work-card work-card--tall" data-reveal-card data-node-id="1041:811">
+        <div class="work-phone">
+          <div class="work-phone__frame">
+            <div class="work-phone__screen">
+              <img src="assets/work-clocks.jpg" alt="Clocks for iOS" width="500" height="1088" />
+            </div>
+          </div>
+        </div>
+        <span class="work-label">Clocks for iOS</span>
+      </li>
+
+      <!-- Col 2, row 1 — Code Layers -->
+      <li class="work-card" data-reveal-card data-node-id="1041:818">
+        <div class="work-media work-media--clip">
+          <img src="assets/work-code-layers.jpg" alt="Code Layers" width="722" height="406" />
+        </div>
+        <span class="work-label">Code Layers</span>
+      </li>
+
+      <!-- Col 3, row 1 — Recent Work carousel -->
+      <li class="work-card" data-reveal-card data-node-id="1041:825">
+        <div class="work-media work-media--full">
+          <img src="assets/work-carousel.jpg" alt="Recent work" width="900" height="750" />
+        </div>
+      </li>
+
+      <!-- Col 2, row 2 — Figma Make -->
+      <li class="work-card" data-reveal-card data-node-id="1041:828">
+        <div class="work-media work-media--clip">
+          <img src="assets/work-figma-make.jpg" alt="Figma Make" width="722" height="406" />
+        </div>
+        <span class="work-label">Figma Make</span>
+      </li>
+
+      <!-- Col 3, row 2 — Photo Gradient / Tool Icons -->
+      <li class="work-card" data-reveal-card data-node-id="1041:835">
+        <div class="work-media work-media--icons">
+          <img src="assets/work-tool-icons.png" alt="Photo Gradient" width="589" height="269" />
+        </div>
+        <span class="work-label">Photo Gradient</span>
+      </li>
+    </ul>
+  </section>
+</body>
+</html>

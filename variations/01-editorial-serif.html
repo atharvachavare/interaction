@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Direction 01 — Editorial Serif</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #fdfcfa; color: #1a1a1a; font-family: 'Inter', sans-serif; }
+    .page { display: flex; flex-direction: column; align-items: center; padding-bottom: 80px; }
+
+    /* Header */
+    .header { width: 100%; max-width: 1920px; padding: 48px 48px 28px; }
+    .header__top { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .wordmark { font-family: 'Fraunces', serif; font-weight: 500; font-size: 34px; letter-spacing: -0.5px; }
+    .wordmark em { font-style: italic; font-weight: 400; }
+    .label { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: #8a857d; }
+    .rule { height: 1px; background: #e7e3dc; width: 100%; max-width: 1920px; margin-top: 20px; }
+    .lede { font-family: 'Fraunces', serif; font-size: 22px; line-height: 1.45; font-weight: 400; max-width: 620px; margin-top: 28px; color: #3a352e; }
+    .lede em { font-style: italic; color: #1a1a1a; }
+
+    /* Gallery */
+    .gallery { display: flex; gap: 28px; width: 100%; max-width: 1920px; padding: 40px 48px 0; }
+    .col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 28px; }
+    .card { aspect-ratio: var(--r); border: 1px solid #ece8e1; border-radius: 2px; overflow: hidden; background: #fff; }
+    .card img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+    /* Footer */
+    .footer { width: 100%; max-width: 1920px; padding: 56px 48px 0; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .footer span { font-family: 'Fraunces', serif; font-style: italic; font-size: 14px; color: #8a857d; }
+
+    @media (max-width: 1024px) {
+      .gallery { display: block; column-count: 2; column-gap: 28px; }
+      .col { display: contents; }
+      .card { break-inside: avoid; margin-bottom: 28px; }
+    }
+    @media (max-width: 600px) {
+      .gallery { column-count: 1; }
+      .header, .gallery, .footer { padding-left: 24px; padding-right: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="header">
+      <div class="header__top">
+        <h1 class="wordmark">Interface<em>?</em>Lab</h1>
+        <span class="label">Selected Work — 2026</span>
+      </div>
+      <p class="lede">A shelter for <em>design explorations</em> and <em>prototypes</em> — interaction studies crafted by Atharva Chavare.</p>
+    </header>
+    <div class="rule"></div>
+
+    <section class="gallery">
+      <div class="col">
+        <figure class="card" style="--r: 460/461.69"><img src="../assets/pull-to-reload.gif" alt="Pull To Reload" /></figure>
+        <figure class="card" style="--r: 460/248.81"><img src="../assets/stacked-cards-v2.gif" alt="Stacked Cards v2" /></figure>
+        <figure class="card" style="--r: 460/259.83"><img src="../assets/sticker.png" alt="Sticker" /></figure>
+      </div>
+      <div class="col">
+        <figure class="card" style="--r: 460/804.98"><img src="../assets/wallet.gif" alt="Wallet" /></figure>
+      </div>
+      <div class="col">
+        <figure class="card" style="--r: 460/355.81"><img src="../assets/folded-email.gif" alt="Folded Email" /></figure>
+        <figure class="card" style="--r: 460/366.77"><img src="../assets/search-input.gif" alt="Search Input" /></figure>
+      </div>
+      <div class="col">
+        <figure class="card" style="--r: 460/461.69"><img src="../assets/animated-switch.gif" alt="Animated Switch" /></figure>
+        <figure class="card" style="--r: 460/406.11"><img src="../assets/folded-email-2.gif" alt="Folded Email" /></figure>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Built with Next.js &amp; Vercel</span>
+      <span>© 2026, Atharva Chavare</span>
+    </footer>
+  </main>
+</body>
+</html>

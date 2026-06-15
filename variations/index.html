@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visual Directions — INTERFACE?LAB.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #fafafa; color: #111827; font-family: 'JetBrains Mono', monospace; padding: 64px 24px; }
+    .wrap { max-width: 720px; margin: 0 auto; }
+    h1 { font-size: 18px; font-weight: 700; letter-spacing: -0.4px; }
+    .sub { font-size: 13px; color: #6b7280; margin-top: 8px; line-height: 1.6; }
+    ul { list-style: none; margin-top: 32px; display: flex; flex-direction: column; gap: 10px; }
+    a.row { display: flex; align-items: baseline; gap: 14px; text-decoration: none; color: #111827; border: 1px solid #eee; border-radius: 10px; padding: 18px 20px; background: #fff; transition: border-color .2s, transform .2s; }
+    a.row:hover { border-color: #2563eb; transform: translateX(3px); }
+    .num { font-size: 12px; color: #9ca3af; }
+    .name { font-weight: 700; font-size: 14px; }
+    .desc { font-size: 12px; color: #6b7280; margin-left: auto; font-weight: 500; }
+    .orig { margin-top: 24px; font-size: 12px; }
+    .orig a { color: #2563eb; }
+    @media (max-width: 560px) { .desc { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>INTERFACE?LAB. — Visual Directions</h1>
+    <p class="sub">The original design is untouched. Below are five explorations of layout &amp; typography, each keeping the clean, minimal essence.</p>
+    <ul>
+      <li><a class="row" href="01-editorial-serif.html"><span class="num">01</span><span class="name">Editorial Serif</span><span class="desc">Fraunces · magazine</span></a></li>
+      <li><a class="row" href="02-technical-mono.html"><span class="num">02</span><span class="name">Technical Mono</span><span class="desc">JetBrains · spec grid</span></a></li>
+      <li><a class="row" href="03-soft-minimal.html"><span class="num">03</span><span class="name">Soft Minimal</span><span class="desc">Jakarta · soft cards</span></a></li>
+      <li><a class="row" href="04-dark-studio.html"><span class="num">04</span><span class="name">Dark Studio</span><span class="desc">Space Grotesk · dark</span></a></li>
+      <li><a class="row" href="05-big-type.html"><span class="num">05</span><span class="name">Big Type</span><span class="desc">Space Grotesk · hero</span></a></li>
+    </ul>
+    <p class="orig">→ <a href="../index.html">Back to the original design</a></p>
+  </div>
+</body>
+</html>

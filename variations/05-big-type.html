@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Direction 05 — Big Type</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #ffffff; color: #0a0a0a; font-family: 'Space Grotesk', sans-serif; }
+    .page { display: flex; flex-direction: column; align-items: center; padding-bottom: 80px; }
+
+    /* Hero header */
+    .header { width: 100%; max-width: 1680px; padding: 56px 40px 36px; }
+    .topbar { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; color: #6b7280; }
+    .topbar b { color: #0a0a0a; font-weight: 700; letter-spacing: -0.2px; }
+    .hero { font-weight: 700; font-size: clamp(40px, 7vw, 104px); line-height: 0.98; letter-spacing: -0.04em; margin-top: 40px; max-width: 16ch; }
+    .hero .muted { color: #c4c4c4; }
+    .hero .accent { color: #2563eb; }
+
+    /* Gallery */
+    .gallery { display: flex; gap: 16px; width: 100%; max-width: 1680px; padding: 8px 40px 0; }
+    .col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+    .card { aspect-ratio: var(--r); border: 1px solid #ededed; border-radius: 10px; overflow: hidden; background: #fafafa; }
+    .card img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+    /* Footer */
+    .footer { width: 100%; max-width: 1680px; padding: 56px 40px 0; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 13px; color: #9ca3af; }
+
+    @media (max-width: 1024px) {
+      .gallery { display: block; column-count: 2; column-gap: 16px; }
+      .col { display: contents; }
+      .card { break-inside: avoid; margin-bottom: 16px; }
+    }
+    @media (max-width: 600px) { .gallery { column-count: 1; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="header">
+      <div class="topbar">
+        <span><b>INTERFACE?LAB.</b> &nbsp;v1.0</span>
+        <span>All work crafted by <b>@Atharva Chavare</b></span>
+      </div>
+      <h1 class="hero">A shelter for <span class="accent">design explorations</span> <span class="muted">&amp; prototypes.</span></h1>
+    </header>
+
+    <section class="gallery">
+      <div class="col">
+        <figure class="card" style="--r: 460/461.69"><img src="../assets/pull-to-reload.gif" alt="Pull To Reload" /></figure>
+        <figure class="card" style="--r: 460/248.81"><img src="../assets/stacked-cards-v2.gif" alt="Stacked Cards v2" /></figure>
+        <figure class="card" style="--r: 460/259.83"><img src="../assets/sticker.png" alt="Sticker" /></figure>
+      </div>
+      <div class="col">
+        <figure class="card" style="--r: 460/804.98"><img src="../assets/wallet.gif" alt="Wallet" /></figure>
+      </div>
+      <div class="col">
+        <figure class="card" style="--r: 460/355.81"><img src="../assets/folded-email.gif" alt="Folded Email" /></figure>
+        <figure class="card" style="--r: 460/366.77"><img src="../assets/search-input.gif" alt="Search Input" /></figure>
+      </div>
+      <div class="col">
+        <figure class="card" style="--r: 460/461.69"><img src="../assets/animated-switch.gif" alt="Animated Switch" /></figure>
+        <figure class="card" style="--r: 460/406.11"><img src="../assets/folded-email-2.gif" alt="Folded Email" /></figure>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Built with Next.js + Vercel</span>
+      <span>© 2026, Atharva Chavare</span>
+    </footer>
+  </main>
+</body>
+</html>

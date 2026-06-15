@@ -1,0 +1,26 @@
+{
+  "version": "2.13",
+  "children": [
+    {
+      "type": "rectangle",
+      "id": "DexID",
+      "x": -432,
+      "y": -757,
+      "fill": "#CCCCCC",
+      "width": 392,
+      "height": 310
+    },
+    {
+      "type": "frame",
+      "id": "Hkgu0",
+      "x": -498,
+      "y": -298,
+      "name": "Frame 1",
+      "clip": true,
+      "width": 673,
+      "height": 309,
+      "fill": "#FFFFFF",
+      "layout": "none"
+    }
+  ]
+}

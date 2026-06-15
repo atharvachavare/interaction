@@ -1,0 +1,11 @@
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Dependencies / build (not used now, but safe defaults)
+node_modules/
+
+# Vercel
+.vercel/
