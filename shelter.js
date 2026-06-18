@@ -123,8 +123,7 @@
     var ctrl2 = document.getElementById('ctrl2');
     var anchor0 = document.getElementById('anchor0');
     var anchor3 = document.getElementById('anchor3');
-    var frameTop = document.getElementById('frameTop');
-    var frameBottom = document.getElementById('frameBottom');
+    var frameRect = document.getElementById('frameRect');
     var frameDiag = document.getElementById('frameDiag');
 
     // Plot bounds inside the 146×162 card
@@ -142,8 +141,13 @@
 
     function line(a, b) { return 'M ' + a.x + ' ' + a.y + ' L ' + b.x + ' ' + b.y; }
 
-    frameTop.setAttribute('d', line({ x: X0, y: YTOP }, { x: X1, y: YTOP }));
-    frameBottom.setAttribute('d', line({ x: X0, y: YBOT }, { x: X1, y: YBOT }));
+    // Single closed path so corners meet with miter joins (no half-connected gaps).
+    frameRect.setAttribute('d',
+      'M ' + X0 + ' ' + YTOP +
+      ' H ' + X1 +
+      ' V ' + YBOT +
+      ' H ' + X0 +
+      ' Z');
     frameDiag.setAttribute('d', line(P0, P3));
     anchor0.setAttribute('cx', P0.x); anchor0.setAttribute('cy', P0.y);
     anchor3.setAttribute('cx', P3.x); anchor3.setAttribute('cy', P3.y);
@@ -291,13 +295,29 @@
   function initShowcase() {
     var section = document.getElementById('showcase');
     if (!section) return;
+    initFillVideos();
     revealCardsOnScroll(section);
+  }
+
+  /** Autoplay kick for fill-card videos (Safari sometimes needs play() after layout). */
+  function initFillVideos() {
+    document.querySelectorAll('.work-card__fill-video, .work-phone__video').forEach(function (video) {
+      function kick() {
+        if (reducedMotion) return;
+        video.play().catch(function () {});
+      }
+
+      if (video.readyState >= 2) kick();
+      else video.addEventListener('loadeddata', kick, { once: true });
+      video.addEventListener('canplay', kick, { once: true });
+    });
   }
 
   function revealCardsOnScroll(section) {
     var cards = section.querySelectorAll('[data-reveal-card]');
     if (reducedMotion || !('IntersectionObserver' in window)) {
       cards.forEach(function (c) { c.classList.add('is-in'); });
+      initFillVideos();
       return;
     }
     var io = new IntersectionObserver(function (entries, obs) {
@@ -308,6 +328,7 @@
         var delay = i * 110;
         card.style.transitionDelay = delay + 'ms';
         card.classList.add('is-in');
+        if (card.classList.contains('work-card--fill')) initFillVideos();
         obs.unobserve(card);
         // Clear the stagger delay after the reveal so hover stays snappy.
         setTimeout(function () { card.style.transitionDelay = '0ms'; }, delay + 1200);
@@ -316,10 +337,138 @@
     cards.forEach(function (c) { io.observe(c); });
   }
 
+  var BLOB_PARAMS = {
+    nearRadius: 2.4,
+    leanStrength: 0.36,
+    shrinkStrength: 0.07,
+    lerpReact: 0.13,
+    normSpanX: 0.26,
+    normSpanY: 0.42,
+    eyeTravelX: 24,
+    eyeTravelY: 16,
+    lerpEye: 0.42,
+    lerpSquint: 0.18,
+    reactNearWiden: 0.4,
+    reactFarSquint: 0.35,
+    motionSensitivity: 300,
+    motionDecay: 0.92,
+    blinkMinMs: 2200,
+    blinkMaxMs: 6000,
+    blinkDurationMs: 110,
+  };
+
+  function initBlobs() {
+    var blobs = [];
+    ['blobBlue', 'blobPink'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) blobs.push({ el: el, eyes: el.querySelectorAll('.blob__eye') });
+    });
+    if (!blobs.length) return;
+
+    var fine = window.matchMedia('(pointer: fine)').matches;
+    if (reducedMotion || !fine) return; // touch / reduced-motion: keep CSS idle only
+
+    // Pointer position; start off-screen so eyes rest until first move.
+    var pointer = { x: -9999, y: -9999, active: false };
+    var lastX = -9999, lastY = -9999;
+    var lastSpeed = 0;
+
+    window.addEventListener('mousemove', function (e) {
+      if (pointer.active) {
+        var mdx = e.clientX - lastX, mdy = e.clientY - lastY;
+        lastSpeed = Math.sqrt(mdx * mdx + mdy * mdy);
+      } else {
+        lastSpeed = 0;
+      }
+      lastX = e.clientX; lastY = e.clientY;
+      pointer.x = e.clientX; pointer.y = e.clientY; pointer.active = true;
+    }, { passive: true });
+    window.addEventListener('mouseleave', function () {
+      pointer.active = false;
+      lastSpeed = 0;
+    });
+
+    function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
+
+    // Smoothed per-blob state for natural easing.
+    var st = blobs.map(function () {
+      return { ex: 0, ey: 0, rx: 0, ry: 0, rs: 1, sy: 1 };
+    });
+    var motion = blobs.map(function () { return 0; });
+
+    function frame() {
+      for (var i = 0; i < blobs.length; i++) {
+        var b = blobs[i], s = st[i];
+        var p = BLOB_PARAMS;
+
+        motion[i] *= p.motionDecay;
+        motion[i] = Math.min(1, motion[i] + lastSpeed / p.motionSensitivity);
+
+        var r = b.el.getBoundingClientRect();
+        var cx = r.left + r.width / 2;
+        var cy = r.top + r.height / 2;
+
+        var dx = pointer.x - cx;
+        var dy = pointer.y - cy;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        var ang = Math.atan2(dy, dx);
+
+        var near = pointer.active ? clamp(1 - dist / (r.width * p.nearRadius), 0, 1) : 0;
+
+        var nx = clamp(dx / (window.innerWidth * p.normSpanX), -1, 1);
+        var ny = clamp(dy / (window.innerHeight * p.normSpanY), -1, 1);
+        var tex = pointer.active ? nx * p.eyeTravelX : 0;
+        var tey = pointer.active ? ny * p.eyeTravelY : 0;
+
+        var react = (near * p.reactNearWiden) - ((1 - near) * p.reactFarSquint);
+        var tsy = 1 + react * motion[i];
+
+        var lean = near * r.width * p.leanStrength;
+        var trx = -Math.cos(ang) * lean;
+        var trinit = -Math.sin(ang) * lean;
+        var trs = 1 - near * p.shrinkStrength;
+
+        s.ex += (tex - s.ex) * p.lerpEye;
+        s.ey += (tey - s.ey) * p.lerpEye;
+        s.sy += (tsy - s.sy) * p.lerpSquint;
+        s.rx += (trx - s.rx) * p.lerpReact;
+        s.ry += (trinit - s.ry) * p.lerpReact;
+        s.rs += (trs - s.rs) * p.lerpReact;
+
+        var style = b.el.style;
+        style.setProperty('--exL', s.ex.toFixed(2) + 'px');
+        style.setProperty('--eyL', s.ey.toFixed(2) + 'px');
+        style.setProperty('--exR', s.ex.toFixed(2) + 'px');
+        style.setProperty('--eyR', s.ey.toFixed(2) + 'px');
+        style.setProperty('--syL', s.sy.toFixed(3));
+        style.setProperty('--syR', s.sy.toFixed(3));
+        style.setProperty('--rx', s.rx.toFixed(2) + 'px');
+        style.setProperty('--ry', s.ry.toFixed(2) + 'px');
+        style.setProperty('--rs', s.rs.toFixed(3));
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+
+    function scheduleBlink(b) {
+      var span = Math.max(0, BLOB_PARAMS.blinkMaxMs - BLOB_PARAMS.blinkMinMs);
+      var delay = BLOB_PARAMS.blinkMinMs + Math.random() * span;
+      setTimeout(function () {
+        b.el.classList.add('is-blinking');
+        setTimeout(function () {
+          b.el.classList.remove('is-blinking');
+          scheduleBlink(b);
+        }, BLOB_PARAMS.blinkDurationMs);
+      }, delay);
+    }
+    blobs.forEach(scheduleBlink);
+  }
+
   function boot() {
     initStrokePaths();
     initCurveEditor();
     initShowcase();
+    initBlobs();
     var fonts = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
     fonts.then(function () {
       requestAnimationFrame(function () { runIntro(); });

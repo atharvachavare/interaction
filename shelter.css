@@ -60,6 +60,112 @@ img {
   align-items: center;
 }
 
+/* ── Decorative blobs flanking the phone — Figma 1043:845 ── */
+.blob {
+  position: absolute;
+  z-index: 3;
+  width: clamp(68px, 9vw, 114px);
+  height: auto;
+  pointer-events: none;
+  /* Cursor-reaction state, written by JS (smoothly eased). */
+  --rx: 0px;   /* lean x */
+  --ry: 0px;   /* lean y */
+  --rs: 1;     /* shrink/scale */
+  --exL: 0px; --eyL: 0px;  /* left eye look offset */
+  --exR: 0px; --eyR: 0px;  /* right eye look offset */
+  --syL: 1;  --syR: 1;     /* eye openness (squint<1, widen>1) */
+  opacity: 0;
+  transform: translateY(12px) scale(0.94);
+  transition: opacity 0.7s var(--ios), transform 0.7s var(--ios);
+}
+
+.blob--blue {
+  left: -80px;
+  top: -20px;
+  width: 128px;
+  --blink-sy: 0.08;
+}
+
+.blob--pink {
+  right: clamp(-44px, -1.6vw, 0px);
+  top: clamp(22px, 5.4vw, 76px);
+  --blink-sy: 0.08;
+}
+
+.composition.stage-clouds .blob,
+.composition.is-ready .blob {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Cursor-reaction layer (JS): lean away + recoil-shrink, eased like a spring. */
+.blob__react {
+  transform: translate(var(--rx), var(--ry)) scale(var(--rs));
+  transition: transform 0.14s cubic-bezier(0.33, 1.56, 0.64, 1);
+  will-change: transform;
+}
+
+/* Inner SVG carries the "alive" idle motion (separate from reveal + reaction). */
+.blob__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform-origin: center bottom;
+  --idle-hop14: 2%;
+  --idle-hop34: -15%;
+  --idle-hop66: -6%;
+  --idle-sx14: 1.08; --idle-sy14: 0.9;
+  --idle-sx34: 0.93; --idle-sy34: 1.08;
+  --idle-sx52: 1.07; --idle-sy52: 0.93;
+  --idle-sx66: 0.98; --idle-sy66: 1.03;
+  --idle-sx80: 1.03; --idle-sy80: 0.98;
+  --idle-rot14: -1.5deg;
+  --idle-rot34: 1.5deg;
+  --idle-rot66: 0.6deg;
+  --idle-rot80: -0.4deg;
+  animation: blobIdle 2.9s ease-in-out infinite;
+  will-change: transform;
+}
+
+.blob--pink .blob__svg {
+  animation-duration: 3.4s;
+  animation-delay: -1.2s;
+}
+
+.blob__eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.01s linear;
+}
+.blob__eye:nth-child(1) { transform: translate(var(--exL), var(--eyL)) scaleY(var(--syL)); }
+.blob__eye:nth-child(2) { transform: translate(var(--exR), var(--eyR)) scaleY(var(--syR)); }
+
+/* Quick blink, JS-toggled (keeps the look offset, flattens vertically). */
+.blob.is-blinking .blob__eye:nth-child(1) {
+  transform: translate(var(--exL), var(--eyL)) scaleY(var(--blink-sy, 0.08)) !important;
+  transition: transform 0.09s ease-in !important;
+}
+.blob.is-blinking .blob__eye:nth-child(2) {
+  transform: translate(var(--exR), var(--eyR)) scaleY(var(--blink-sy, 0.08)) !important;
+  transition: transform 0.09s ease-in !important;
+}
+
+@keyframes blobIdle {
+  0%   { transform: translateY(0) scale(1, 1) rotate(0deg); }
+  14%  { transform: translateY(var(--idle-hop14)) scale(var(--idle-sx14), var(--idle-sy14)) rotate(var(--idle-rot14)); }
+  34%  { transform: translateY(var(--idle-hop34)) scale(var(--idle-sx34), var(--idle-sy34)) rotate(var(--idle-rot34)); }
+  52%  { transform: translateY(0) scale(var(--idle-sx52), var(--idle-sy52)) rotate(0deg); }
+  66%  { transform: translateY(var(--idle-hop66)) scale(var(--idle-sx66), var(--idle-sy66)) rotate(var(--idle-rot66)); }
+  80%  { transform: translateY(0) scale(var(--idle-sx80), var(--idle-sy80)) rotate(var(--idle-rot80)); }
+  100% { transform: translateY(0) scale(1, 1) rotate(0deg); }
+}
+
+@media (max-width: 720px) {
+  .blob { width: clamp(50px, 13vw, 78px); }
+  .blob--blue { left: 0; top: 0; }
+  .blob--pink { right: 0; top: 12px; }
+}
+
 /* ── Phone mockup — Figma 1037:720 ── */
 .phone {
   position: relative;
@@ -152,8 +258,10 @@ img {
 
 .curve-frame {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.35);
+  stroke: #81a9ff;
   stroke-width: 1.2;
+  stroke-linejoin: miter;
+  stroke-linecap: butt;
 }
 
 .curve-frame--dashed {
@@ -162,7 +270,7 @@ img {
 
 .curve-diag {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.35);
+  stroke: #81a9ff;
   stroke-width: 1.2;
 }
 
@@ -451,7 +559,16 @@ img {
   .clouds__right,
   .intro-reveal,
   .headline__char,
-  .stroke-path {
+  .stroke-path,
+  .blob {
+    transition: none !important;
+  }
+
+  .blob__svg {
+    animation: none !important;
+  }
+  .blob__react,
+  .blob__eye {
     transition: none !important;
   }
 }
@@ -459,17 +576,73 @@ img {
 /* ════════════════════════════════════════════════
    Selected work — Figma 1041:810 (portfolio bento)
    ════════════════════════════════════════════════ */
+#showcase {
+  --work-max-w: 1200px;
+  --work-pad-x: 24px;
+  --work-pad-top: 100px;
+  --work-pad-bottom: 120px;
+  --work-gap: 32px;
+  --work-card-pad: 26px;
+  --work-card-radius: 40px;
+  --fill-hover-scale: 1.05;
+  --phone-pad-top: 8%;
+  --phone-frame-h: 82%;
+  --phone-aspect-w: 338;
+  --phone-aspect-h: 718;
+  --phone-screen-pos-y: 0%;
+  --phone-screen-hover-scale: 1.04;
+  --icons-width: 88%;
+  --icons-hover-scale: 1.06;
+  --label-bottom: 18px;
+  --fill-recharge-pos-x: 50%;
+  --fill-recharge-pos-y: 63%;
+  --fill-recharge-scale-w: 108%;
+  --fill-recharge-scale-h: 108%;
+  --fill-recharge-top: -7%;
+  --fill-recharge-left: -4%;
+  --fill-recharge-right: -4%;
+  --fill-recharge-bottom: -1%;
+  --fill-recharge-bleed: 1px;
+  --fill-dragorb-pos-x: 50%;
+  --fill-dragorb-pos-y: 50%;
+  --fill-dragorb-scale-w: 100%;
+  --fill-dragorb-scale-h: 100%;
+  --fill-dragorb-top: -1px;
+  --fill-dragorb-left: -1px;
+  --fill-dragorb-right: -1px;
+  --fill-dragorb-bottom: -1px;
+  --fill-dragorb-bleed: 1px;
+  --fill-scroller-pos-x: 50%;
+  --fill-scroller-pos-y: 50%;
+  --fill-scroller-scale-w: 100%;
+  --fill-scroller-scale-h: 100%;
+  --fill-scroller-top: -1px;
+  --fill-scroller-left: -1px;
+  --fill-scroller-right: -1px;
+  --fill-scroller-bottom: -1px;
+  --fill-scroller-bleed: 1px;
+  --fill-calendar-pos-x: 50%;
+  --fill-calendar-pos-y: 50%;
+  --fill-calendar-scale-w: 100%;
+  --fill-calendar-scale-h: 100%;
+  --fill-calendar-top: -1px;
+  --fill-calendar-left: -1px;
+  --fill-calendar-right: -1px;
+  --fill-calendar-bottom: -1px;
+  --fill-calendar-bleed: 1px;
+}
+
 .work {
-  max-width: 1200px;
+  max-width: var(--work-max-w);
   margin: 0 auto;
-  padding: clamp(64px, 12vh, 140px) 24px clamp(80px, 14vh, 160px);
+  padding: var(--work-pad-top) var(--work-pad-x) var(--work-pad-bottom);
 }
 
 .work__grid {
   list-style: none;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(20px, 3vw, 48px);
+  gap: var(--work-gap);
   align-items: stretch;
 }
 
@@ -479,10 +652,11 @@ img {
   align-items: center;
   justify-content: center;
   aspect-ratio: 1 / 1;
-  padding: clamp(20px, 2.6vw, 32px);
+  min-height: 0;
+  padding: var(--work-card-pad);
   background: #ffffff;
   border: 1px solid #e9e9e9;
-  border-radius: clamp(28px, 3.4vw, 48px);
+  border-radius: var(--work-card-radius);
   overflow: hidden;
   opacity: 0;
   transform: translateY(22px) scale(0.98);
@@ -507,42 +681,116 @@ img {
   padding: 0;
 }
 
-/* ── Phone (Clocks for iOS) ── */
+.work-card--fill {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-self: stretch;
+  aspect-ratio: 1 / 1;
+  /* Safari: no filter/transform on any ancestor of <video> — opacity reveal only. */
+  filter: none !important;
+  transform: none !important;
+  will-change: opacity;
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.work-card--fill.is-in {
+  transform: none !important;
+  filter: none !important;
+}
+
+.work-card__fill-stage {
+  flex: 1 1 auto;
+  position: relative;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: #ffffff;
+  transform-origin: center center;
+  transition: transform 0.6s var(--ios);
+}
+
+.work-card--fill:hover .work-card__fill-stage {
+  transform: scale(var(--fill-hover-scale));
+}
+
+.work-card__fill-video {
+  position: absolute;
+  max-width: none;
+  object-fit: cover;
+  pointer-events: none;
+  vertical-align: top;
+}
+
+.work-card--recharge .work-card__fill-video {
+  object-position: var(--fill-recharge-pos-x) var(--fill-recharge-pos-y);
+  top: var(--fill-recharge-top);
+  right: var(--fill-recharge-right);
+  bottom: var(--fill-recharge-bottom);
+  left: var(--fill-recharge-left);
+  width: calc(var(--fill-recharge-scale-w) + var(--fill-recharge-bleed) * 2);
+  height: calc(var(--fill-recharge-scale-h) + var(--fill-recharge-bleed) * 2);
+}
+
+.work-card--dragorb .work-card__fill-video {
+  object-position: var(--fill-dragorb-pos-x) var(--fill-dragorb-pos-y);
+  top: var(--fill-dragorb-top);
+  right: var(--fill-dragorb-right);
+  bottom: var(--fill-dragorb-bottom);
+  left: var(--fill-dragorb-left);
+  width: calc(var(--fill-dragorb-scale-w) + var(--fill-dragorb-bleed) * 2);
+  height: calc(var(--fill-dragorb-scale-h) + var(--fill-dragorb-bleed) * 2);
+}
+
+.work-card--scroller .work-card__fill-video {
+  object-position: var(--fill-scroller-pos-x) var(--fill-scroller-pos-y);
+  top: var(--fill-scroller-top);
+  right: var(--fill-scroller-right);
+  bottom: var(--fill-scroller-bottom);
+  left: var(--fill-scroller-left);
+  width: calc(var(--fill-scroller-scale-w) + var(--fill-scroller-bleed) * 2);
+  height: calc(var(--fill-scroller-scale-h) + var(--fill-scroller-bleed) * 2);
+}
+
+.work-card--calendar .work-card__fill-video {
+  object-position: var(--fill-calendar-pos-x) var(--fill-calendar-pos-y);
+  top: var(--fill-calendar-top);
+  right: var(--fill-calendar-right);
+  bottom: var(--fill-calendar-bottom);
+  left: var(--fill-calendar-left);
+  width: calc(var(--fill-calendar-scale-w) + var(--fill-calendar-bleed) * 2);
+  height: calc(var(--fill-calendar-scale-h) + var(--fill-calendar-bleed) * 2);
+}
+
+.work-card--fill .work-label {
+  z-index: 2;
+}
+
+/* ── Phone (Clocks for iOS) — video replaces device chrome ── */
 .work-phone {
   display: flex;
   align-items: flex-start;
   justify-content: center;
   width: 100%;
   height: 100%;
-  padding-top: 8%;
+  padding-top: var(--phone-pad-top);
 }
 
-.work-phone__frame {
-  height: 82%;
-  aspect-ratio: 338 / 718;
-  background: #1d1d1f;
-  border-radius: clamp(38px, 4vw, 54px);
-  padding: clamp(6px, 0.7vw, 8px);
-  box-shadow:
-    0 18.9px 3.4px rgba(0, 0, 0, 0.01),
-    0 10.8px 3.4px rgba(0, 0, 0, 0.05),
-    0 4px 2px rgba(0, 0, 0, 0.09),
-    0 1.4px 1.4px rgba(0, 0, 0, 0.1);
-}
-
-.work-phone__screen {
-  height: 100%;
-  border: 1.4px solid rgba(0, 0, 0, 0.1);
-  border-radius: clamp(32px, 3.4vw, 46px);
-  overflow: hidden;
-}
-
-.work-phone__screen img {
-  width: 100%;
-  height: 100%;
+.work-phone__video {
+  display: block;
+  height: var(--phone-frame-h);
+  width: auto;
+  max-width: 100%;
+  aspect-ratio: var(--phone-aspect-w) / var(--phone-aspect-h);
   object-fit: cover;
-  object-position: top center;
+  object-position: center var(--phone-screen-pos-y);
+  border-radius: 0;
   transition: transform 0.6s var(--ios);
+}
+
+.work-card:hover .work-phone__video {
+  transform: scale(var(--phone-screen-hover-scale));
 }
 
 /* ── Media cards ── */
@@ -551,7 +799,8 @@ img {
   transition: transform 0.5s var(--ios);
 }
 
-.work-media img {
+.work-media img,
+.work-media__video {
   display: block;
   transition: transform 0.6s var(--ios);
 }
@@ -569,7 +818,8 @@ img {
     0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.work-media--clip img {
+.work-media--clip img,
+.work-media--clip .work-media__video {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -581,7 +831,8 @@ img {
   inset: 0;
 }
 
-.work-media--full img {
+.work-media--full img,
+.work-media--full .work-media__video {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -596,21 +847,22 @@ img {
 }
 
 .work-media--icons img {
-  width: 88%;
+  width: var(--icons-width);
   height: auto;
   object-fit: contain;
 }
 
 /* Hover liveliness */
-.work-card:hover .work-media--clip img { transform: scale(1.12); }
-.work-card:hover .work-media--full img { transform: scale(1.05); }
-.work-card:hover .work-media--icons img { transform: scale(1.06); }
-.work-card:hover .work-phone__screen img { transform: scale(1.04); }
+.work-card:hover .work-media--clip img,
+.work-card:hover .work-media--clip .work-media__video { transform: scale(1.12); }
+.work-card:hover .work-media--full img,
+.work-card:hover .work-media--full .work-media__video { transform: scale(1.05); }
+.work-card:hover .work-media--icons img { transform: scale(var(--icons-hover-scale)); }
 
 /* ── Glassy hover label ── */
 .work-label {
   position: absolute;
-  bottom: clamp(16px, 2vw, 22px);
+  bottom: var(--label-bottom);
   left: 50%;
   padding: 13px 28px;
   border-radius: 100px;
@@ -665,7 +917,10 @@ img {
     transform: none;
   }
   .work-media img,
-  .work-phone__screen img {
+  .work-media__video,
+  .work-card__fill-video,
+  .work-card__fill-stage,
+  .work-phone__video {
     transition: none !important;
   }
 }

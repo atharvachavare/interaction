@@ -50,8 +50,7 @@
           <div class="phone__content" id="phoneContent">
             <div class="mock-card mock-card--curve intro-reveal" data-reveal="1">
               <svg class="curve-art" id="curveEditor" viewBox="0 0 146 162" role="img" aria-label="Interactive cubic-bezier easing curve">
-                <path class="curve-frame curve-frame--dashed" id="frameTop"></path>
-                <path class="curve-frame" id="frameBottom"></path>
+                <path class="curve-frame" id="frameRect"></path>
                 <path class="curve-diag" id="frameDiag"></path>
                 <path class="curve-handle-line" id="handleLine1"></path>
                 <path class="curve-handle-line" id="handleLine2"></path>
@@ -77,6 +76,34 @@
         </div>
       </div>
 
+      <div class="blob blob--blue" id="blobBlue" aria-hidden="true">
+        <div class="blob__react">
+          <svg class="blob__svg" viewBox="0 0 157 169" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path class="blob__body" d="M10.7315 18.8759C-8.44679 34.972 2.16385 56.7929 11.1537 65.9254L12.0098 76.6275C4.87506 88.614 -2.28826 117.981 27.8491 137.844C35.2726 143.864 55.9405 154.783 77.5121 152.011C83.9334 158.004 98.7452 169.648 106.622 168.278C114.499 166.908 115.612 148.586 115.184 139.596C130.595 128.637 135.589 111.057 136.16 103.637C141.582 100.641 152.427 91.7363 152.427 80.0924C152.427 68.4484 141.582 60.9712 136.16 58.688C138.586 52.124 141.04 36.1707 131.451 24.8692C121.862 13.5677 105.48 19.0187 98.4884 23.1568C97.3468 17.7339 91.2109 5.68928 75.7998 0.894703C60.3887 -3.89987 49.9719 11.7406 46.6899 20.1602C29.5664 11.9409 15.5828 15.8793 10.7315 18.8759Z" fill="#0976FE"/>
+            <g class="blob__eyes">
+              <ellipse class="blob__eye" cx="34.6983" cy="97.1757" rx="10.7022" ry="14.1269" fill="white"/>
+              <ellipse class="blob__eye" cx="66.377" cy="97.1757" rx="10.7022" ry="14.1269" fill="white"/>
+            </g>
+            <path class="blob__band" d="M11.9873 76.6285L11.129 65.9241C13.0064 61.2633 94.8166 58.853 135.519 57.309C144.602 48.9359 151.441 50.1642 153.725 51.825C157.451 55.8993 151.283 61.5885 147.734 63.9238C158.926 69.4485 156.609 74.1318 154.052 75.7829C145.121 80.1907 138.383 73.4013 136.131 69.4557C120.466 72.985 46.9573 74.8662 11.9873 76.6285Z" fill="#131313"/>
+          </svg>
+        </div>
+      </div>
+      <div class="blob blob--pink" id="blobPink" aria-hidden="true">
+        <div class="blob__react">
+          <svg class="blob__svg" viewBox="0 0 152 167" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path class="blob__spark" d="M125.141 18.4173C122.993 15.8516 108.015 18.3489 100.795 19.9182C113.498 25.0623 121.013 37.5445 123.182 43.1426C124.731 35.9699 127.29 20.983 125.141 18.4173Z" fill="#F6A9EA"/>
+            <path class="blob__spark" d="M91.4756 1.75917C88.2584 0.837535 77.2509 11.2966 72.1493 16.6414C85.5531 13.7865 98.7708 19.9162 103.704 23.3379C100.968 16.529 94.6928 2.68081 91.4756 1.75917Z" fill="#F6A9EA"/>
+            <path class="blob__spark" d="M145.074 43.6984C143.832 40.5908 128.822 38.2962 121.473 37.5373C131.939 46.3838 135.19 60.5864 135.507 66.5818C139.214 60.2489 146.316 46.806 145.074 43.6984Z" fill="#F6A9EA"/>
+            <path class="blob__spark" d="M150.075 77.3262C150.117 73.9799 137.129 66.115 130.629 62.6009C136.913 74.7798 134.48 89.1451 132.478 94.8054C138.326 90.3733 150.033 80.6726 150.075 77.3262Z" fill="#F6A9EA"/>
+            <path class="blob__body" d="M0.224946 72.4079C-3.61227 27.3207 42.5942 15.2494 66.177 14.8497C82.9662 13.3683 96.8745 17.1188 107.346 22.3068C122.46 29.7951 132.177 45.101 135.325 61.6723C144.743 111.251 96.4573 120.675 98.5534 122.771C100.952 125.17 106.947 155.148 105.748 163.542C104.853 169.807 88.5807 164.034 78.9373 159.661C77.6791 159.091 76.233 159.08 74.9348 159.552C49.8487 168.683 45.0129 139.126 45.7917 122.771C32.2016 124.77 4.06216 117.495 0.224946 72.4079Z" fill="#EC48D3"/>
+            <g class="blob__eyes">
+              <ellipse class="blob__eye" cx="28.5675" cy="64.8815" rx="9.19981" ry="14.526" fill="#FDFFFF"/>
+              <ellipse class="blob__eye" cx="52.7779" cy="64.8815" rx="9.19981" ry="14.526" fill="#FDFFFF"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+
       <div class="clouds" id="clouds" aria-hidden="true">
         <div class="clouds__left">
           <img class="clouds__img" src="assets/cloud-left.png" alt="" width="452" height="249" />
@@ -95,47 +122,54 @@
 
   <section class="work" id="showcase" aria-label="Selected work">
     <ul class="work__grid">
-      <!-- Col 1, spans both rows — phone (Clocks for iOS) -->
+      <!-- Col 1, spans both rows — Instagram -->
       <li class="work-card work-card--tall" data-reveal-card data-node-id="1041:811">
         <div class="work-phone">
-          <div class="work-phone__frame">
-            <div class="work-phone__screen">
-              <img src="assets/work-clocks.jpg" alt="Clocks for iOS" width="500" height="1088" />
-            </div>
-          </div>
+          <video class="work-phone__video" src="assets/Iphoneinsta.mov"
+                 autoplay loop muted playsinline webkit-playsinline
+                 preload="auto" aria-label="Instagram"></video>
         </div>
-        <span class="work-label">Clocks for iOS</span>
+        <span class="work-label">Instagram</span>
       </li>
 
-      <!-- Col 2, row 1 — Code Layers -->
-      <li class="work-card" data-reveal-card data-node-id="1041:818">
-        <div class="work-media work-media--clip">
-          <img src="assets/work-code-layers.jpg" alt="Code Layers" width="722" height="406" />
+      <!-- Col 2, row 1 — Recharge -->
+      <li class="work-card work-card--fill work-card--recharge" data-reveal-card data-node-id="1041:818">
+        <div class="work-card__fill-stage" aria-hidden="true">
+          <video class="work-card__fill-video" src="assets/RECHARGEINT1.mov"
+                 autoplay loop muted playsinline webkit-playsinline
+                 preload="auto" aria-label="Recharge"></video>
         </div>
-        <span class="work-label">Code Layers</span>
+        <span class="work-label">Recharge</span>
       </li>
 
-      <!-- Col 3, row 1 — Recent Work carousel -->
-      <li class="work-card" data-reveal-card data-node-id="1041:825">
-        <div class="work-media work-media--full">
-          <img src="assets/work-carousel.jpg" alt="Recent work" width="900" height="750" />
+      <!-- Col 3, row 1 — Drag Orb -->
+      <li class="work-card work-card--fill work-card--dragorb" data-reveal-card data-node-id="1041:825">
+        <div class="work-card__fill-stage" aria-hidden="true">
+          <video class="work-card__fill-video" src="assets/DRAGORB.mov"
+                 autoplay loop muted playsinline webkit-playsinline
+                 preload="auto" aria-label="Drag Orb"></video>
         </div>
+        <span class="work-label">Drag Orb</span>
       </li>
 
-      <!-- Col 2, row 2 — Figma Make -->
-      <li class="work-card" data-reveal-card data-node-id="1041:828">
-        <div class="work-media work-media--clip">
-          <img src="assets/work-figma-make.jpg" alt="Figma Make" width="722" height="406" />
+      <!-- Col 2, row 2 — Scroller -->
+      <li class="work-card work-card--fill work-card--scroller" data-reveal-card data-node-id="1041:828">
+        <div class="work-card__fill-stage" aria-hidden="true">
+          <video class="work-card__fill-video" src="assets/SCROOLER1.mov"
+                 autoplay loop muted playsinline webkit-playsinline
+                 preload="auto" aria-label="Scroller"></video>
         </div>
-        <span class="work-label">Figma Make</span>
+        <span class="work-label">Scroller</span>
       </li>
 
-      <!-- Col 3, row 2 — Photo Gradient / Tool Icons -->
-      <li class="work-card" data-reveal-card data-node-id="1041:835">
-        <div class="work-media work-media--icons">
-          <img src="assets/work-tool-icons.png" alt="Photo Gradient" width="589" height="269" />
+      <!-- Col 3, row 2 — Calendar -->
+      <li class="work-card work-card--fill work-card--calendar" data-reveal-card data-node-id="1041:835">
+        <div class="work-card__fill-stage" aria-hidden="true">
+          <video class="work-card__fill-video" src="assets/Calenderint.mov"
+                 autoplay loop muted playsinline webkit-playsinline
+                 preload="auto" aria-label="Calendar"></video>
         </div>
-        <span class="work-label">Photo Gradient</span>
+        <span class="work-label">Calendar</span>
       </li>
     </ul>
   </section>
