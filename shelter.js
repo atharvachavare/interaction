@@ -297,6 +297,333 @@
     if (!section) return;
     initFillVideos();
     revealCardsOnScroll(section);
+    initInteractionSheet(section);
+  }
+
+  function initInteractionSheet(section) {
+    var sheet = document.getElementById('interactionSheet');
+    var panel = document.getElementById('interactionSheetPanel');
+    var titleEl = document.getElementById('interactionSheetTitle');
+    var chipsEl = document.getElementById('interactionChips');
+    var mount = document.getElementById('interactionMount');
+    var handle = document.getElementById('interactionSheetHandle');
+    var backdrop = sheet ? sheet.querySelector('.interaction-sheet__backdrop') : null;
+    var closeCursor = document.getElementById('sheetCloseCursor');
+    var closeCursorIcon = closeCursor ? closeCursor.querySelector('.sheet-close-cursor__icon') : null;
+    if (!sheet || !panel || !titleEl || !chipsEl || !mount || !handle || !backdrop || !closeCursor || !closeCursorIcon) return;
+
+    var activeId = null;
+    var activeTeardown = null;
+    var lastFocus = null;
+    var crossCursorVisible = false;
+    var sheetDrag = null;
+    var SHEET_MIN_VH = 78;
+    var SHEET_MAX_VH = 92;
+    var SHEET_CLOSE_DRAG = 110;
+
+    function resetSheetGeometry() {
+      panel.classList.remove('is-dragging');
+      panel.style.removeProperty('--sheet-drag-y');
+      panel.style.removeProperty('--sheet-height');
+      sheetDrag = null;
+    }
+
+    function renderChips(chips) {
+      chipsEl.innerHTML = '';
+      if (!chips || !chips.length) return;
+      chips.forEach(function (label) {
+        var li = document.createElement('li');
+        li.className = 'interaction-sheet__chip';
+        li.textContent = label;
+        chipsEl.appendChild(li);
+      });
+    }
+
+    function onSheetDragStart(clientY) {
+      sheetDrag = {
+        startY: clientY,
+        startHeight: panel.offsetHeight,
+      };
+      panel.classList.add('is-dragging');
+    }
+
+    function onSheetDragMove(clientY) {
+      if (!sheetDrag) return;
+      var deltaY = clientY - sheetDrag.startY;
+      var vh = window.innerHeight;
+      var minH = vh * (SHEET_MIN_VH / 100);
+      var maxH = vh * (SHEET_MAX_VH / 100);
+
+      if (deltaY > 0) {
+        panel.style.setProperty('--sheet-drag-y', deltaY + 'px');
+        panel.style.removeProperty('--sheet-height');
+      } else {
+        var newH = Math.min(sheetDrag.startHeight - deltaY, maxH);
+        newH = Math.max(newH, minH);
+        panel.style.setProperty('--sheet-height', newH + 'px');
+        panel.style.setProperty('--sheet-drag-y', '0px');
+      }
+    }
+
+    function onSheetDragEnd() {
+      if (!sheetDrag) return;
+      var dragY = parseFloat(panel.style.getPropertyValue('--sheet-drag-y')) || 0;
+      panel.classList.remove('is-dragging');
+      sheetDrag = null;
+
+      if (dragY > SHEET_CLOSE_DRAG) {
+        closeSheet();
+        return;
+      }
+
+      panel.style.setProperty('--sheet-drag-y', '0px');
+
+      var currentH = panel.offsetHeight;
+      var vh = window.innerHeight;
+      var minH = vh * (SHEET_MIN_VH / 100);
+      var maxH = vh * (SHEET_MAX_VH / 100);
+      if (currentH > minH + 24) {
+        var mid = (minH + maxH) / 2;
+        panel.style.setProperty('--sheet-height', (currentH >= mid ? maxH : minH) + 'px');
+      } else {
+        panel.style.removeProperty('--sheet-height');
+      }
+    }
+
+    function onHandleDown(e) {
+      if (!sheet.classList.contains('is-open')) return;
+      var point = e.touches ? e.touches[0] : e;
+      onSheetDragStart(point.clientY);
+      e.preventDefault();
+    }
+
+    function onHandleMove(e) {
+      if (!sheetDrag) return;
+      var point = e.touches ? e.touches[0] : e;
+      onSheetDragMove(point.clientY);
+      if (e.cancelable) e.preventDefault();
+    }
+
+    function onHandleUp() {
+      onSheetDragEnd();
+    }
+
+    handle.addEventListener('mousedown', onHandleDown);
+    handle.addEventListener('touchstart', onHandleDown, { passive: false });
+    window.addEventListener('mousemove', onHandleMove);
+    window.addEventListener('touchmove', onHandleMove, { passive: false });
+    window.addEventListener('mouseup', onHandleUp);
+    window.addEventListener('touchend', onHandleUp);
+    window.addEventListener('touchcancel', onHandleUp);
+
+    function isOverBackdrop(clientX, clientY) {
+      if (!sheet.classList.contains('is-open')) return false;
+      var panelRect = panel.getBoundingClientRect();
+      return clientY < panelRect.top;
+    }
+
+    function setCrossCursorPos(clientX, clientY) {
+      closeCursor.style.left = clientX + 'px';
+      closeCursor.style.top = clientY + 'px';
+    }
+
+    function resetCrossCursorIcon() {
+      closeCursorIcon.classList.remove('is-spring-in', 'is-spring-out', 'is-shown');
+    }
+
+    function showCrossCursor() {
+      document.body.classList.add('is-sheet-cross-cursor');
+      closeCursor.classList.add('is-active');
+      closeCursor.setAttribute('aria-hidden', 'false');
+      if (crossCursorVisible && closeCursorIcon.classList.contains('is-shown')) return;
+
+      crossCursorVisible = true;
+      closeCursorIcon.classList.remove('is-spring-out', 'is-shown', 'is-spring-in');
+      void closeCursorIcon.offsetWidth;
+
+      if (reducedMotion) {
+        closeCursorIcon.classList.add('is-shown');
+        return;
+      }
+
+      closeCursorIcon.classList.add('is-spring-in');
+    }
+
+    function hideCrossCursor() {
+      document.body.classList.remove('is-sheet-cross-cursor');
+      if (!crossCursorVisible) {
+        closeCursor.classList.remove('is-active');
+        closeCursor.setAttribute('aria-hidden', 'true');
+        return;
+      }
+
+      crossCursorVisible = false;
+      closeCursorIcon.classList.remove('is-spring-in');
+
+      if (reducedMotion) {
+        closeCursorIcon.classList.remove('is-spring-out', 'is-shown');
+        closeCursor.classList.remove('is-active');
+        closeCursor.setAttribute('aria-hidden', 'true');
+        return;
+      }
+
+      if (!closeCursorIcon.classList.contains('is-shown')) {
+        closeCursorIcon.classList.add('is-shown');
+      }
+      closeCursorIcon.classList.remove('is-spring-out');
+      void closeCursorIcon.offsetWidth;
+      closeCursorIcon.classList.add('is-spring-out');
+    }
+
+    function onCrossCursorAnimEnd(e) {
+      if (e.target !== closeCursorIcon) return;
+      if (closeCursorIcon.classList.contains('is-spring-in')) {
+        closeCursorIcon.classList.remove('is-spring-in');
+        closeCursorIcon.classList.add('is-shown');
+      }
+      if (closeCursorIcon.classList.contains('is-spring-out')) {
+        closeCursorIcon.classList.remove('is-spring-out');
+        closeCursor.classList.remove('is-active');
+        closeCursor.setAttribute('aria-hidden', 'true');
+      }
+    }
+
+    function onSheetPointerMove(e) {
+      if (!sheet.classList.contains('is-open')) return;
+      var point = e.touches ? e.touches[0] : e;
+      setCrossCursorPos(point.clientX, point.clientY);
+      if (isOverBackdrop(point.clientX, point.clientY)) showCrossCursor();
+      else hideCrossCursor();
+    }
+
+    closeCursorIcon.addEventListener('animationend', onCrossCursorAnimEnd);
+
+    var INTERACTIONS = {
+      recharge: {
+        title: 'Recharge',
+        chips: ['React', 'TypeScript', 'Motion', 'Tailwind CSS'],
+        mount: function (el) {
+          if (window.ShelterRechargeCard) {
+            return window.ShelterRechargeCard.mount(el);
+          }
+          el.innerHTML =
+            '<div class="interaction-demo">' +
+              '<p class="interaction-demo__placeholder">Recharge failed to load.</p>' +
+            '</div>';
+        },
+      },
+      dragorb: {
+        title: 'Drag Orb',
+        chips: ['React', 'TypeScript', 'Tailwind CSS', 'Lucide'],
+        mount: function (el) {
+          if (window.ShelterDragOrb) {
+            return window.ShelterDragOrb.mount(el);
+          }
+          el.innerHTML =
+            '<div class="interaction-demo">' +
+              '<p class="interaction-demo__placeholder">Drag Orb failed to load.</p>' +
+            '</div>';
+        },
+      },
+      scroller: {
+        title: 'Scroller',
+        chips: ['React', 'TypeScript', 'Motion', 'Tailwind CSS', 'Radix UI', 'Lucide'],
+        mount: function (el) {
+          if (window.ShelterValueScroller) {
+            return window.ShelterValueScroller.mount(el, {
+              initialValue: 30,
+            });
+          }
+          el.innerHTML =
+            '<div class="interaction-demo">' +
+              '<p class="interaction-demo__placeholder">Scroller failed to load.</p>' +
+            '</div>';
+        },
+      },
+      calendar: {
+        title: 'Calendar',
+        chips: ['React', 'TypeScript', 'Tailwind CSS'],
+        mount: function (el) {
+          if (window.ShelterCalendarBooking) {
+            return window.ShelterCalendarBooking.mount(el);
+          }
+          el.innerHTML =
+            '<div class="interaction-demo">' +
+              '<p class="interaction-demo__placeholder">Calendar failed to load.</p>' +
+            '</div>';
+        },
+      },
+    };
+
+    function teardownActive() {
+      if (typeof activeTeardown === 'function') activeTeardown();
+      activeTeardown = null;
+      mount.innerHTML = '';
+      activeId = null;
+    }
+
+    function openSheet(id) {
+      var demo = INTERACTIONS[id];
+      if (!demo) return;
+
+      teardownActive();
+      activeId = id;
+      titleEl.textContent = demo.title;
+      renderChips(demo.chips);
+      resetSheetGeometry();
+      sheet.setAttribute('aria-hidden', 'false');
+      sheet.classList.add('is-open');
+      document.body.classList.add('is-sheet-open');
+      activeTeardown = demo.mount(mount) || null;
+      window.addEventListener('mousemove', onSheetPointerMove);
+      window.addEventListener('touchmove', onSheetPointerMove, { passive: true });
+
+      requestAnimationFrame(function () {
+        panel.focus();
+      });
+    }
+
+    function closeSheet() {
+      if (!sheet.classList.contains('is-open')) return;
+      sheet.classList.remove('is-open');
+      sheet.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('is-sheet-open');
+      window.removeEventListener('mousemove', onSheetPointerMove);
+      window.removeEventListener('touchmove', onSheetPointerMove);
+      resetSheetGeometry();
+      hideCrossCursor();
+      renderChips([]);
+      crossCursorVisible = false;
+      resetCrossCursorIcon();
+      closeCursor.classList.remove('is-active');
+      closeCursor.setAttribute('aria-hidden', 'true');
+      teardownActive();
+      if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+    }
+
+    section.querySelectorAll('[data-interaction]').forEach(function (card) {
+      card.addEventListener('click', function (e) {
+        if (e.defaultPrevented) return;
+        var id = card.getAttribute('data-interaction');
+        if (!id) return;
+        lastFocus = card;
+        openSheet(id);
+      });
+      card.addEventListener('keydown', function (e) {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        e.preventDefault();
+        lastFocus = card;
+        openSheet(card.getAttribute('data-interaction'));
+      });
+    });
+
+    sheet.querySelectorAll('[data-sheet-close]').forEach(function (el) {
+      el.addEventListener('click', closeSheet);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeSheet();
+    });
   }
 
   /** Autoplay kick for fill-card videos (Safari sometimes needs play() after layout). */

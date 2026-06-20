@@ -8,6 +8,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="shelter.css" />
+  <link rel="stylesheet" href="interactions/value-scroller.css" />
+  <link rel="stylesheet" href="interactions/recharge-card.css" />
+  <link rel="stylesheet" href="interactions/drag-orb.css" />
+  <link rel="stylesheet" href="interactions/calendar-booking.css" />
+  <script src="interactions/value-scroller.js" defer></script>
+  <script src="interactions/recharge-card.js" defer></script>
+  <script src="interactions/drag-orb.js" defer></script>
+  <script src="interactions/calendar-booking.js" defer></script>
   <script src="shelter.js" defer></script>
 </head>
 <body>
@@ -133,7 +141,7 @@
       </li>
 
       <!-- Col 2, row 1 — Recharge -->
-      <li class="work-card work-card--fill work-card--recharge" data-reveal-card data-node-id="1041:818">
+      <li class="work-card work-card--fill work-card--recharge work-card--interactive" data-reveal-card data-interaction="recharge" data-node-id="1041:818" role="button" tabindex="0" aria-label="Open Recharge interaction">
         <div class="work-card__fill-stage" aria-hidden="true">
           <video class="work-card__fill-video" src="assets/RECHARGEINT1.mov"
                  autoplay loop muted playsinline webkit-playsinline
@@ -143,7 +151,7 @@
       </li>
 
       <!-- Col 3, row 1 — Drag Orb -->
-      <li class="work-card work-card--fill work-card--dragorb" data-reveal-card data-node-id="1041:825">
+      <li class="work-card work-card--fill work-card--dragorb work-card--interactive" data-reveal-card data-interaction="dragorb" data-node-id="1041:825" role="button" tabindex="0" aria-label="Open Drag Orb interaction">
         <div class="work-card__fill-stage" aria-hidden="true">
           <video class="work-card__fill-video" src="assets/DRAGORB.mov"
                  autoplay loop muted playsinline webkit-playsinline
@@ -153,7 +161,7 @@
       </li>
 
       <!-- Col 2, row 2 — Scroller -->
-      <li class="work-card work-card--fill work-card--scroller" data-reveal-card data-node-id="1041:828">
+      <li class="work-card work-card--fill work-card--scroller work-card--interactive" data-reveal-card data-interaction="scroller" data-node-id="1041:828" role="button" tabindex="0" aria-label="Open Scroller interaction">
         <div class="work-card__fill-stage" aria-hidden="true">
           <video class="work-card__fill-video" src="assets/SCROOLER1.mov"
                  autoplay loop muted playsinline webkit-playsinline
@@ -163,7 +171,7 @@
       </li>
 
       <!-- Col 3, row 2 — Calendar -->
-      <li class="work-card work-card--fill work-card--calendar" data-reveal-card data-node-id="1041:835">
+      <li class="work-card work-card--fill work-card--calendar work-card--interactive" data-reveal-card data-interaction="calendar" data-node-id="1041:835" role="button" tabindex="0" aria-label="Open Calendar interaction">
         <div class="work-card__fill-stage" aria-hidden="true">
           <video class="work-card__fill-video" src="assets/Calenderint.mov"
                  autoplay loop muted playsinline webkit-playsinline
@@ -173,5 +181,31 @@
       </li>
     </ul>
   </section>
+
+  <div class="interaction-sheet" id="interactionSheet" aria-hidden="true">
+    <div class="interaction-sheet__backdrop" data-sheet-close tabindex="-1" aria-hidden="true"></div>
+    <div
+      class="interaction-sheet__panel"
+      id="interactionSheetPanel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="interactionSheetTitle"
+      tabindex="-1"
+    >
+      <div class="interaction-sheet__handle" id="interactionSheetHandle" role="button" tabindex="0" aria-label="Drag to resize or close"></div>
+      <div class="interaction-sheet__content">
+        <h2 class="interaction-sheet__title" id="interactionSheetTitle"></h2>
+        <ul class="interaction-sheet__chips" id="interactionChips" aria-label="Tools used"></ul>
+        <div class="interaction-sheet__stage">
+          <div class="interaction-sheet__mount" id="interactionMount"></div>
+        </div>
+      </div>
+    </div>
+    <div class="sheet-close-cursor" id="sheetCloseCursor" aria-hidden="true">
+      <div class="sheet-close-cursor__icon">
+        <img src="assets/sheet-close-cursor.svg" alt="" width="31" height="31" />
+      </div>
+    </div>
+  </div>
 </body>
 </html>

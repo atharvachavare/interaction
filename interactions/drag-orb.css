@@ -1,0 +1,161 @@
+/* Drag Orb — ported from Drag Orb / theme-slider.tsx (SCALE 0.78) */
+
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap");
+
+.interaction-demo--dragorb {
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 0;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.drag-orb-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.5s ease;
+  overflow: hidden;
+}
+
+.drag-orb-blob {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  transition: opacity 0.7s ease, filter 0.7s ease, background 0.7s ease;
+}
+
+.drag-orb-blob--a {
+  width: 420px;
+  height: 420px;
+  left: 20%;
+  top: 30%;
+}
+
+.drag-orb-blob--b {
+  width: 360px;
+  height: 360px;
+  right: 18%;
+  bottom: 20%;
+}
+
+.drag-orb-card {
+  position: relative;
+  width: 440px;
+  height: 520px;
+  transform: scale(0.78);
+  transform-origin: center center;
+  flex-shrink: 0;
+}
+
+.drag-orb-glass {
+  position: absolute;
+  inset: 0;
+  border-radius: 36px;
+  transition: background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+}
+
+.drag-orb-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 48px;
+  text-align: left;
+  pointer-events: none;
+  user-select: none;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 16px;
+  z-index: 2;
+}
+
+.drag-orb-eyebrow {
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  transition: color 0.5s ease;
+}
+
+.drag-orb-title {
+  margin: 0;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.5;
+  transition: color 0.5s ease;
+}
+
+.drag-orb-copy {
+  margin: 0;
+  max-width: 260px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  transition: color 0.5s ease;
+}
+
+.drag-orb-svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 440px;
+  height: 520px;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.drag-orb-knob {
+  position: absolute;
+  z-index: 4;
+  width: 56px;
+  height: 56px;
+  margin-left: -28px;
+  margin-top: -28px;
+  border-radius: 50%;
+  cursor: grab;
+  touch-action: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: left 0.4s cubic-bezier(0.22, 1, 0.36, 1), top 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+}
+
+.drag-orb-knob.is-dragging {
+  cursor: grabbing;
+  transition: none;
+}
+
+.drag-orb-knob-icons {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drag-orb-knob-icons svg {
+  position: absolute;
+  display: block;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.drag-orb-knob.is-dragging .drag-orb-knob-icons svg {
+  transition: none;
+}

@@ -1,0 +1,155 @@
+/* Recharge card — ported from Recharge / RechargeCard.tsx */
+
+.interaction-demo--recharge {
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  min-height: 100%;
+}
+
+.recharge-card-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.recharge-card {
+  position: relative;
+  width: min(320px, 100%);
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  border-radius: 40px;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.recharge-card__title {
+  margin: 0 0 32px;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  z-index: 10;
+}
+
+.recharge-card__labels {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 16px;
+  margin-bottom: 8px;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #737373;
+  z-index: 10;
+}
+
+.recharge-card__track {
+  position: relative;
+  width: 100%;
+  height: 96px;
+  border-radius: 999px;
+  background: #111111;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.recharge-card__grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.2;
+  pointer-events: none;
+  background-image: radial-gradient(#555555 1px, transparent 1px);
+  background-size: 8px 8px;
+}
+
+.recharge-card__fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 25%;
+  border-radius: 999px;
+  background: #ff3b30;
+  filter: blur(2px);
+  z-index: 10;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.3);
+  will-change: width, background-color;
+}
+
+.recharge-card__glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 25%;
+  border-radius: 999px;
+  z-index: 20;
+  mix-blend-mode: screen;
+  opacity: 0.6;
+  box-shadow: 0 0 40px 10px #ff3b30;
+  will-change: width, opacity, box-shadow;
+}
+
+.recharge-card__glass {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  outline: 1px solid rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+  z-index: 30;
+}
+
+.recharge-card__glass-highlight {
+  position: absolute;
+  top: 8px;
+  left: 16px;
+  right: 16px;
+  height: 33%;
+  border-radius: 999px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), transparent);
+  filter: blur(1px);
+}
+
+.recharge-card__ambient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 20% 80%, rgba(255, 59, 48, 0.15), transparent 50%);
+  transition: background 0.5s ease;
+}
+
+.recharge-card.is-active .recharge-card__ambient {
+  background: radial-gradient(circle at 50% 80%, rgba(50, 215, 75, 0.15), transparent 60%);
+}
+
+.recharge-card__hint {
+  margin: 0;
+  font-family: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #78716c;
+  animation: recharge-hint-pulse 2s ease-in-out infinite;
+}
+
+@keyframes recharge-hint-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recharge-card__hint {
+    animation: none;
+  }
+}
