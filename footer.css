@@ -1,0 +1,188 @@
+/* Site footer — from FOOTER / iOS17 Dynamic Island Link */
+
+.site-footer {
+  --footer-margin-top: 100px;
+  --footer-pad-x: 24px;
+  --footer-pad-bottom: 80px;
+
+  width: 100%;
+  max-width: 1200px;
+  margin: var(--footer-margin-top) auto 0;
+  padding: 0 var(--footer-pad-x) var(--footer-pad-bottom);
+}
+
+.site-footer .footer {
+  --footer-bg: #000000;
+  --credit-color: #ffffff;
+  --footer-width: 100%;
+  --footer-height: 124px;
+  --footer-radius: 32px;
+  --sphere-size: 72px;
+  --sphere-gap: 12px;
+  --inner-pad-left: 44px;
+  --inner-pad-right: 44px;
+  --footer-inner-gap: 24px;
+  --credit-size: 20px;
+  --hover-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --hover-duration: 300ms;
+  --hover-scale: 1.08;
+
+  position: relative;
+  width: var(--footer-width);
+  height: var(--footer-height);
+  background: var(--footer-bg);
+  border-radius: var(--footer-radius);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.site-footer .footer__inner {
+  position: absolute;
+  top: 50%;
+  left: var(--inner-pad-left);
+  right: var(--inner-pad-right);
+  transform: translateY(-50%);
+  height: var(--sphere-size);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--footer-inner-gap);
+}
+
+.site-footer .spheres {
+  display: flex;
+  align-items: center;
+  gap: var(--sphere-gap);
+  flex-shrink: 0;
+}
+
+.site-footer .sphere-wrap {
+  position: relative;
+  width: var(--sphere-size);
+  height: var(--sphere-size);
+  flex: 0 0 auto;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.site-footer .sphere-wrap .sphere {
+  display: block;
+  width: var(--sphere-size);
+  height: var(--sphere-size);
+  -webkit-user-drag: none;
+  user-select: none;
+  pointer-events: none;
+  will-change: transform, filter;
+  transition: filter var(--hover-duration) var(--hover-ease);
+}
+
+.site-footer .sphere-wrap:hover .sphere {
+  animation: footer-energy-shake 0.35s ease-in-out infinite;
+  filter: brightness(1.15) saturate(1.2);
+}
+
+@keyframes footer-energy-shake {
+  0%,
+  100% {
+    transform: scale(var(--hover-scale)) translateX(0) rotate(0deg);
+  }
+  20% {
+    transform: scale(var(--hover-scale)) translateX(-2px) rotate(-1deg);
+  }
+  40% {
+    transform: scale(var(--hover-scale)) translateX(2px) rotate(1deg);
+  }
+  60% {
+    transform: scale(var(--hover-scale)) translateX(-1.5px) rotate(-0.5deg);
+  }
+  80% {
+    transform: scale(var(--hover-scale)) translateX(1.5px) rotate(0.5deg);
+  }
+}
+
+.site-footer .credit {
+  margin: 0;
+  flex-shrink: 0;
+  color: var(--credit-color);
+  font-family: 'Bricolage Grotesque', system-ui, -apple-system, sans-serif;
+  font-size: var(--credit-size);
+  font-weight: 800;
+  font-variation-settings: 'opsz' 14, 'wdth' 100;
+  line-height: normal;
+  white-space: nowrap;
+  text-align: center;
+  user-select: none;
+}
+
+.site-footer .credit.is-scrambling {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: clip;
+  vertical-align: middle;
+}
+
+@media (max-width: 1100px) {
+  .site-footer .footer {
+    --inner-pad-left: 32px;
+    --inner-pad-right: 32px;
+    --sphere-size: 64px;
+    --sphere-gap: 12px;
+    --footer-height: 108px;
+    --credit-size: 18px;
+  }
+}
+
+@media (max-width: 760px) {
+  .site-footer {
+    padding: 0 16px 64px;
+  }
+
+  .site-footer .footer {
+    --inner-pad-left: 20px;
+    --inner-pad-right: 20px;
+    --sphere-size: 48px;
+    --sphere-gap: 12px;
+    --footer-height: auto;
+    min-height: 100px;
+    --credit-size: 14px;
+  }
+
+  .site-footer .footer__inner {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    transform: none;
+    flex-direction: column;
+    justify-content: center;
+    height: auto;
+    padding: 24px 20px;
+    gap: 20px;
+  }
+
+  .site-footer .spheres {
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 100%;
+  }
+
+  .site-footer .credit {
+    white-space: normal;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-footer .sphere-wrap:hover .sphere {
+    animation: none;
+    transform: scale(1.04);
+    filter: brightness(1.1);
+  }
+}
+
+@media (hover: none) {
+  .site-footer .sphere-wrap:active .sphere {
+    transform: scale(1.04);
+    filter: brightness(1.1);
+  }
+}
