@@ -825,6 +825,111 @@
     blobs.forEach(scheduleBlink);
   }
 
+  function initFooterSocialLinks() {
+    document.querySelectorAll('.site-footer .sphere-wrap').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        var href = link.getAttribute('href');
+        if (!href || href === '#') e.preventDefault();
+      });
+    });
+  }
+
+  function initFooterSphereSounds() {
+    var AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+
+    var audioCtx = null;
+    var masterGain = null;
+    var unlockPromise = null;
+    var lastPlayedAt = 0;
+
+    function ensureContext() {
+      if (!audioCtx) {
+        audioCtx = new AudioCtx();
+        masterGain = audioCtx.createGain();
+        masterGain.gain.value = 0.42;
+        masterGain.connect(audioCtx.destination);
+      }
+      return audioCtx;
+    }
+
+    function unlockAudio() {
+      var ctx = ensureContext();
+      if (ctx.state === 'running') return Promise.resolve();
+
+      if (!unlockPromise) {
+        unlockPromise = ctx.resume().catch(function () {}).then(function () {
+          if (ctx.state !== 'running') unlockPromise = null;
+        });
+      }
+      return unlockPromise || Promise.resolve();
+    }
+
+    ['pointerdown', 'touchstart', 'keydown', 'click'].forEach(function (eventName) {
+      document.addEventListener(eventName, unlockAudio, { passive: true });
+    });
+
+    function playHoverTone(index) {
+      unlockAudio().then(function () {
+        var ctx = ensureContext();
+        if (ctx.state !== 'running' || !masterGain) return;
+
+        var now = performance.now();
+        if (now - lastPlayedAt < 60) return;
+        lastPlayedAt = now;
+
+        var t0 = ctx.currentTime;
+        var freq = 720 + index * 62;
+
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        var filter = ctx.createBiquadFilter();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, t0);
+        osc.frequency.exponentialRampToValueAtTime(freq * 1.16, t0 + 0.03);
+
+        filter.type = 'highpass';
+        filter.frequency.setValueAtTime(480, t0);
+
+        gain.gain.setValueAtTime(0.0001, t0);
+        gain.gain.exponentialRampToValueAtTime(0.22, t0 + 0.004);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.1);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(masterGain);
+        osc.start(t0);
+        osc.stop(t0 + 0.11);
+
+        var click = ctx.createOscillator();
+        var clickGain = ctx.createGain();
+        click.type = 'sine';
+        click.frequency.setValueAtTime(2200 + index * 40, t0);
+        clickGain.gain.setValueAtTime(0.0001, t0);
+        clickGain.gain.exponentialRampToValueAtTime(0.1, t0 + 0.002);
+        clickGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.024);
+        click.connect(clickGain);
+        clickGain.connect(masterGain);
+        click.start(t0);
+        click.stop(t0 + 0.03);
+      });
+    }
+
+    document.querySelectorAll('.site-footer .sphere-wrap').forEach(function (link, index) {
+      function onSphereInteract() {
+        playHoverTone(index);
+      }
+
+      link.addEventListener('pointerdown', onSphereInteract);
+      link.addEventListener('pointerenter', onSphereInteract);
+
+      link.addEventListener('focus', function () {
+        if (link.matches(':focus-visible')) onSphereInteract();
+      });
+    });
+  }
+
   function initFooterCreditScramble() {
     var credit = document.getElementById('footerCredit');
     var footer = document.querySelector('.site-footer');
@@ -947,6 +1052,8 @@
     initCurveEditor();
     initShowcase();
     initBlobs();
+    initFooterSocialLinks();
+    initFooterSphereSounds();
     initFooterCreditScramble();
     var fonts = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
     fonts.then(function () {
