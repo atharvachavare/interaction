@@ -577,6 +577,12 @@ img {
    Selected work — Figma 1041:810 (portfolio bento)
    ════════════════════════════════════════════════ */
 #showcase {
+  --wide-col-start: 1;
+  --wide-col-span: 2;
+  --wide-grid-row: 3;
+  --wide-aspect-w: 2;
+  --wide-aspect-h: 0.75;
+  --wide-min-h: 0px;
   --work-max-w: 1200px;
   --work-pad-x: 24px;
   --work-pad-top: 100px;
@@ -761,6 +767,43 @@ img {
   left: var(--fill-calendar-left);
   width: calc(var(--fill-calendar-scale-w) + var(--fill-calendar-bleed) * 2);
   height: calc(var(--fill-calendar-scale-h) + var(--fill-calendar-bleed) * 2);
+}
+
+/* Row 3 wide slot — spans Scroller + Calendar columns */
+.work-card--wide {
+  grid-column: var(--wide-col-start) / span var(--wide-col-span);
+  grid-row: var(--wide-grid-row);
+  aspect-ratio: var(--wide-aspect-w) / var(--wide-aspect-h);
+  min-height: var(--wide-min-h);
+}
+
+.work-card--placeholder {
+  cursor: default;
+}
+
+.work-card--placeholder:hover .work-card__fill-stage {
+  transform: none;
+}
+
+.work-card__fill-stage--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: var(--work-card-pad);
+  border: 1.4px dashed #d9d9d9;
+  border-radius: calc(var(--work-card-radius) - 12px);
+  background: #fafafa;
+}
+
+.work-card__placeholder-text {
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  font-variation-settings: 'opsz' 14, 'wdth' 100;
+  color: rgba(0, 0, 0, 0.35);
+  letter-spacing: -0.01em;
+  user-select: none;
+  pointer-events: none;
 }
 
 .work-card--fill .work-label {
@@ -1151,6 +1194,10 @@ body.is-sheet-open {
   }
   .work-card--tall {
     grid-row: 1 / span 2;
+  }
+  .work-card--wide {
+    grid-column: 1 / -1;
+    grid-row: auto;
   }
 }
 

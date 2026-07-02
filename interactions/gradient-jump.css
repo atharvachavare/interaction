@@ -1,0 +1,123 @@
+/* Gradient Jump — Matter.js spheres */
+
+.interaction-demo--gradientjump {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+  display: block;
+  background: #121212;
+  overflow: hidden;
+}
+
+.gradient-jump--card {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.gradient-jump--sheet {
+  min-height: 100%;
+  border-radius: 0;
+}
+
+.gradient-jump__hint {
+  position: absolute;
+  top: 16px;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  margin: 0;
+  text-align: center;
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.42);
+  pointer-events: none;
+}
+
+.gradient-jump__arena {
+  position: absolute;
+  inset: 0;
+  touch-action: none;
+  cursor: grab;
+}
+
+.gradient-jump__arena.is-dragging {
+  cursor: grabbing;
+}
+
+.gradient-jump__sphere {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  will-change: transform;
+  pointer-events: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.gradient-jump__sphere-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Showcase card */
+.work-card--gradientjump .work-card__fill-stage {
+  background: #121212;
+}
+
+.work-card--gradientjump:hover .work-card__fill-stage {
+  transform: none;
+}
+
+.work-card--gradientjump .work-label {
+  z-index: 4;
+}
+
+/* Peek on hover, then fade so the card stays clear for play */
+.work-card--gradientjump:hover .work-label,
+.work-card--gradientjump:focus-within .work-label {
+  opacity: 0;
+  transform: translateX(-50%) translateY(8px);
+}
+
+.work-card--gradientjump.is-label-peek .work-label {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.work-card__gradient-mount {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Bottom sheet — fill the stage */
+.interaction-sheet__mount:has(.interaction-demo--gradientjump) {
+  position: relative;
+  padding: 0;
+  border: none;
+  background: #121212;
+  overflow: hidden;
+}
+
+.interaction-sheet__mount .gradient-jump--sheet {
+  position: absolute;
+  inset: 0;
+  min-height: 100%;
+  height: 100%;
+}
+
+.interaction-sheet__mount:has(.interaction-demo--gradientjump) .interaction-demo--gradientjump {
+  position: absolute;
+  inset: 0;
+}

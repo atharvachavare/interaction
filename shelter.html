@@ -12,11 +12,14 @@
   <link rel="stylesheet" href="interactions/recharge-card.css" />
   <link rel="stylesheet" href="interactions/drag-orb.css" />
   <link rel="stylesheet" href="interactions/calendar-booking.css" />
+  <link rel="stylesheet" href="interactions/gradient-jump.css" />
   <link rel="stylesheet" href="footer.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js" defer></script>
   <script src="interactions/value-scroller.js" defer></script>
   <script src="interactions/recharge-card.js" defer></script>
   <script src="interactions/drag-orb.js" defer></script>
   <script src="interactions/calendar-booking.js" defer></script>
+  <script src="interactions/gradient-jump.js" defer></script>
   <script src="shelter.js" defer></script>
 </head>
 <body>
@@ -179,6 +182,14 @@
                  preload="auto" aria-label="Calendar"></video>
         </div>
         <span class="work-label">Calendar</span>
+      </li>
+
+      <!-- Col 2–3, row 3 — Sphere Bounce -->
+      <li class="work-card work-card--fill work-card--wide work-card--gradientjump work-card--interactive" id="wideCard" data-reveal-card data-interaction="gradientjump" role="button" tabindex="0" aria-label="Open Sphere Bounce interaction">
+        <div class="work-card__fill-stage" aria-hidden="true">
+          <div class="work-card__gradient-mount" id="gradientJumpCardMount"></div>
+        </div>
+        <span class="work-label">Sphere Bounce</span>
       </li>
     </ul>
   </section>

@@ -20,6 +20,52 @@
 
   let playStackArrival = function () {};
 
+  var gradientJumpCardTeardown = null;
+
+  function mountGradientJumpCard() {
+    var mount = document.getElementById('gradientJumpCardMount');
+    if (!mount || !window.ShelterGradientJump) return;
+    if (gradientJumpCardTeardown) gradientJumpCardTeardown();
+    gradientJumpCardTeardown = window.ShelterGradientJump.mount(mount, {
+      mode: 'card',
+      showHint: false,
+      hostCard: document.getElementById('wideCard'),
+    });
+  }
+
+  function pauseGradientJumpCard() {
+    if (gradientJumpCardTeardown) {
+      gradientJumpCardTeardown();
+      gradientJumpCardTeardown = null;
+    }
+  }
+
+  function initSphereBounceLabelPeek() {
+    var card = document.getElementById('wideCard');
+    if (!card) return;
+
+    var hideTimer = null;
+    var PEEK_MS = 2800;
+
+    function showLabelPeek() {
+      card.classList.add('is-label-peek');
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(function () {
+        card.classList.remove('is-label-peek');
+      }, PEEK_MS);
+    }
+
+    function clearLabelPeek() {
+      clearTimeout(hideTimer);
+      card.classList.remove('is-label-peek');
+    }
+
+    card.addEventListener('mouseenter', showLabelPeek);
+    card.addEventListener('mouseleave', clearLabelPeek);
+    card.addEventListener('focusin', showLabelPeek);
+    card.addEventListener('focusout', clearLabelPeek);
+  }
+
 
   function wait(ms) {
     return new Promise(function (resolve) { setTimeout(resolve, ms); });
@@ -298,6 +344,12 @@
     initFillVideos();
     revealCardsOnScroll(section);
     initInteractionSheet(section);
+    initSphereBounceLabelPeek();
+    if (document.getElementById('gradientJumpCardMount')) {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(mountGradientJumpCard);
+      });
+    }
   }
 
   function initInteractionSheet(section) {
@@ -590,6 +642,22 @@
             '</div>';
         },
       },
+      gradientjump: {
+        title: 'Sphere Bounce',
+        chips: ['Matter.js', 'JavaScript', 'CSS'],
+        mount: function (el) {
+          if (window.ShelterGradientJump) {
+            return window.ShelterGradientJump.mount(el, {
+              mode: 'sheet',
+              showHint: true,
+            });
+          }
+          el.innerHTML =
+            '<div class="interaction-demo">' +
+              '<p class="interaction-demo__placeholder">Sphere Bounce failed to load.</p>' +
+            '</div>';
+        },
+      },
     };
 
     function teardownActive() {
@@ -602,6 +670,8 @@
     function openSheet(id) {
       var demo = INTERACTIONS[id];
       if (!demo) return;
+
+      if (id === 'gradientjump') pauseGradientJumpCard();
 
       teardownActive();
       activeId = id;
@@ -623,6 +693,7 @@
 
     function closeSheet() {
       if (!sheet.classList.contains('is-open')) return;
+      var closingId = activeId;
       sheet.classList.remove('is-open');
       sheet.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('is-sheet-open');
@@ -632,12 +703,21 @@
       hideCrossCursor(true);
       renderChips([]);
       teardownActive();
+      if (closingId === 'gradientjump') {
+        requestAnimationFrame(function () {
+          requestAnimationFrame(mountGradientJumpCard);
+        });
+      }
       if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
     }
 
     section.querySelectorAll('[data-interaction]').forEach(function (card) {
       card.addEventListener('click', function (e) {
         if (e.defaultPrevented) return;
+        if (card.getAttribute('data-interaction-dragged') === 'true') {
+          card.removeAttribute('data-interaction-dragged');
+          return;
+        }
         var id = card.getAttribute('data-interaction');
         if (!id) return;
         lastFocus = card;
@@ -679,6 +759,7 @@
     if (reducedMotion || !('IntersectionObserver' in window)) {
       cards.forEach(function (c) { c.classList.add('is-in'); });
       initFillVideos();
+      mountGradientJumpCard();
       return;
     }
     var io = new IntersectionObserver(function (entries, obs) {
@@ -690,6 +771,9 @@
         card.style.transitionDelay = delay + 'ms';
         card.classList.add('is-in');
         if (card.classList.contains('work-card--fill')) initFillVideos();
+        if (card.getAttribute('data-interaction') === 'gradientjump') {
+          setTimeout(mountGradientJumpCard, delay + 320);
+        }
         obs.unobserve(card);
         // Clear the stagger delay after the reveal so hover stays snappy.
         setTimeout(function () { card.style.transitionDelay = '0ms'; }, delay + 1200);
