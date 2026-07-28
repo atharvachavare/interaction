@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="interactions/drag-orb.css" />
   <link rel="stylesheet" href="interactions/calendar-booking.css" />
   <link rel="stylesheet" href="interactions/gradient-jump.css" />
+  <link rel="stylesheet" href="interactions/voice-to-text.css" />
   <link rel="stylesheet" href="footer.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js" defer></script>
   <script src="interactions/value-scroller.js" defer></script>
@@ -20,6 +21,7 @@
   <script src="interactions/drag-orb.js" defer></script>
   <script src="interactions/calendar-booking.js" defer></script>
   <script src="interactions/gradient-jump.js" defer></script>
+  <script src="interactions/voice-to-text.js" defer></script>
   <script src="shelter.js" defer></script>
 </head>
 <body>
@@ -43,7 +45,7 @@
               id="strokeRingOuter"
               class="stroke-path stroke-path--ring"
               fill="none"
-              stroke="#efefef"
+              stroke="var(--ring)"
               stroke-width="1.127"
               vector-effect="non-scaling-stroke"
             />
@@ -51,7 +53,7 @@
               id="strokeRingInner"
               class="stroke-path stroke-path--ring"
               fill="none"
-              stroke="#efefef"
+              stroke="var(--ring)"
               stroke-width="1.127"
               vector-effect="non-scaling-stroke"
             />
@@ -190,6 +192,14 @@
           <div class="work-card__gradient-mount" id="gradientJumpCardMount"></div>
         </div>
         <span class="work-label">Sphere Bounce</span>
+      </li>
+
+      <!-- Col 3, row 3 — Speech to Text -->
+      <li class="work-card work-card--fill work-card--slot work-card--voicetext work-card--interactive" id="interactionSlot" data-reveal-card data-interaction="voicetext" role="button" tabindex="0" aria-label="Open Speech to Text interaction">
+        <div class="work-card__fill-stage" aria-hidden="true">
+          <div class="work-card__voice-mount" id="voiceTextCardMount"></div>
+        </div>
+        <span class="work-label">Speech to Text</span>
       </li>
     </ul>
   </section>

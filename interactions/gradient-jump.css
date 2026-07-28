@@ -90,7 +90,9 @@
   transform: translateX(-50%) translateY(8px);
 }
 
-.work-card--gradientjump.is-label-peek .work-label {
+.work-card--gradientjump.is-label-peek .work-label,
+.work-card--gradientjump.is-label-peek:hover .work-label,
+.work-card--gradientjump.is-label-peek:focus-within .work-label {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }

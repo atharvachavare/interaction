@@ -158,6 +158,15 @@
   vertical-align: middle;
 }
 
+html[data-theme='dark'] .site-footer .footer {
+  --footer-bg: #1a1a22;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+html[data-theme='dark'] .site-footer .sphere-chip {
+  background: #2a2a34;
+}
+
 @media (max-width: 1100px) {
   .site-footer .footer {
     --inner-pad-left: 32px;

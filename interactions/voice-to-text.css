@@ -1,0 +1,201 @@
+/* Speech to Text — waveform canvas interaction */
+
+.interaction-demo--voicetext {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+  display: block;
+  background: #020303;
+  overflow: hidden;
+}
+
+.voice-text--card {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.voice-text--sheet {
+  min-height: 100%;
+  border-radius: 0;
+}
+
+.voice-text__visualizer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: #020303;
+}
+
+.voice-text__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.voice-text__themes {
+  position: absolute;
+  z-index: 3;
+  top: 14px;
+  left: 50%;
+  display: flex;
+  gap: 3px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(4, 6, 8, 0.68);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transform: translateX(-50%);
+}
+
+.voice-text__theme {
+  min-width: 68px;
+  height: 28px;
+  padding: 0 11px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.52);
+  font: 500 11px/1 'Bricolage Grotesque', Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  transition: color 150ms ease, background 150ms ease, box-shadow 150ms ease;
+}
+
+.voice-text__theme:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.voice-text__theme.is-active {
+  background: var(--voice-accent, #e5fbfc);
+  color: #071011;
+  box-shadow: 0 0 18px color-mix(in srgb, var(--voice-accent, #e5fbfc) 38%, transparent);
+}
+
+.voice-text__theme:focus-visible {
+  outline: 2px solid var(--voice-accent, #e5fbfc);
+  outline-offset: 1px;
+}
+
+.voice-text__listen {
+  position: absolute;
+  z-index: 2;
+  left: 12px;
+  bottom: 11px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 27px;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(8, 10, 10, 0.72);
+  color: rgba(255, 255, 255, 0.75);
+  font: 11px/1 'Bricolage Grotesque', Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.voice-text__listen:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.34);
+  background: rgba(18, 21, 21, 0.88);
+}
+
+.voice-text__listen:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.45);
+  outline-offset: 2px;
+}
+
+.voice-text__dot {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #aeb8b9;
+  box-shadow: 0 0 0 rgba(217, 245, 247, 0);
+}
+
+.voice-text__listen.is-listening .voice-text__dot {
+  background: #e5fbfc;
+  animation: voice-text-pulse 1s ease-out infinite;
+}
+
+@keyframes voice-text-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(217, 245, 247, 0.42); }
+  100% { box-shadow: 0 0 0 7px rgba(217, 245, 247, 0); }
+}
+
+/* Showcase card */
+.work-card--voicetext .work-card__fill-stage {
+  background: #020303;
+}
+
+.work-card--voicetext:hover .work-card__fill-stage {
+  transform: none;
+}
+
+.work-card--voicetext .work-label {
+  z-index: 4;
+}
+
+/* Peek on hover, then fade so the card stays clear for interaction */
+.work-card--voicetext:hover .work-label,
+.work-card--voicetext:focus-within .work-label {
+  opacity: 0;
+  transform: translateX(-50%) translateY(8px);
+}
+
+.work-card--voicetext.is-label-peek .work-label,
+.work-card--voicetext.is-label-peek:hover .work-label,
+.work-card--voicetext.is-label-peek:focus-within .work-label {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.work-card__voice-mount {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Bottom sheet */
+.interaction-sheet__mount:has(.interaction-demo--voicetext) {
+  position: relative;
+  padding: 0;
+  border: none;
+  background: #020303;
+  overflow: hidden;
+}
+
+.interaction-sheet__mount .voice-text--sheet {
+  position: absolute;
+  inset: 0;
+  min-height: 100%;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .voice-text__listen.is-listening .voice-text__dot {
+    animation: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .voice-text__themes {
+    max-width: calc(100% - 20px);
+    overflow-x: auto;
+  }
+
+  .voice-text__theme {
+    min-width: 61px;
+    padding: 0 9px;
+  }
+}

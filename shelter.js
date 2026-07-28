@@ -21,6 +21,7 @@
   let playStackArrival = function () {};
 
   var gradientJumpCardTeardown = null;
+  var voiceTextCardTeardown = null;
 
   function mountGradientJumpCard() {
     var mount = document.getElementById('gradientJumpCardMount');
@@ -38,6 +39,49 @@
       gradientJumpCardTeardown();
       gradientJumpCardTeardown = null;
     }
+  }
+
+  function mountVoiceTextCard() {
+    var mount = document.getElementById('voiceTextCardMount');
+    if (!mount || !window.ShelterVoiceToText) return;
+    if (voiceTextCardTeardown) voiceTextCardTeardown();
+    voiceTextCardTeardown = window.ShelterVoiceToText.mount(mount, {
+      mode: 'card',
+      hostCard: document.getElementById('interactionSlot'),
+    });
+  }
+
+  function pauseVoiceTextCard() {
+    if (voiceTextCardTeardown) {
+      voiceTextCardTeardown();
+      voiceTextCardTeardown = null;
+    }
+  }
+
+  function initVoiceTextLabelPeek() {
+    var card = document.getElementById('interactionSlot');
+    if (!card) return;
+
+    var hideTimer = null;
+    var PEEK_MS = 2800;
+
+    function showLabelPeek() {
+      card.classList.add('is-label-peek');
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(function () {
+        card.classList.remove('is-label-peek');
+      }, PEEK_MS);
+    }
+
+    function clearLabelPeek() {
+      clearTimeout(hideTimer);
+      card.classList.remove('is-label-peek');
+    }
+
+    card.addEventListener('mouseenter', showLabelPeek);
+    card.addEventListener('mouseleave', clearLabelPeek);
+    card.addEventListener('focusin', showLabelPeek);
+    card.addEventListener('focusout', clearLabelPeek);
   }
 
   function initSphereBounceLabelPeek() {
@@ -345,9 +389,15 @@
     revealCardsOnScroll(section);
     initInteractionSheet(section);
     initSphereBounceLabelPeek();
+    initVoiceTextLabelPeek();
     if (document.getElementById('gradientJumpCardMount')) {
       requestAnimationFrame(function () {
         requestAnimationFrame(mountGradientJumpCard);
+      });
+    }
+    if (document.getElementById('voiceTextCardMount')) {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(mountVoiceTextCard);
       });
     }
   }
@@ -658,6 +708,21 @@
             '</div>';
         },
       },
+      voicetext: {
+        title: 'Speech to Text',
+        chips: ['Web Speech API', 'Canvas', 'JavaScript'],
+        mount: function (el) {
+          if (window.ShelterVoiceToText) {
+            return window.ShelterVoiceToText.mount(el, {
+              mode: 'sheet',
+            });
+          }
+          el.innerHTML =
+            '<div class="interaction-demo">' +
+              '<p class="interaction-demo__placeholder">Speech to Text failed to load.</p>' +
+            '</div>';
+        },
+      },
     };
 
     function teardownActive() {
@@ -672,6 +737,7 @@
       if (!demo) return;
 
       if (id === 'gradientjump') pauseGradientJumpCard();
+      if (id === 'voicetext') pauseVoiceTextCard();
 
       teardownActive();
       activeId = id;
@@ -706,6 +772,11 @@
       if (closingId === 'gradientjump') {
         requestAnimationFrame(function () {
           requestAnimationFrame(mountGradientJumpCard);
+        });
+      }
+      if (closingId === 'voicetext') {
+        requestAnimationFrame(function () {
+          requestAnimationFrame(mountVoiceTextCard);
         });
       }
       if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
@@ -760,6 +831,7 @@
       cards.forEach(function (c) { c.classList.add('is-in'); });
       initFillVideos();
       mountGradientJumpCard();
+      mountVoiceTextCard();
       return;
     }
     var io = new IntersectionObserver(function (entries, obs) {
@@ -773,6 +845,9 @@
         if (card.classList.contains('work-card--fill')) initFillVideos();
         if (card.getAttribute('data-interaction') === 'gradientjump') {
           setTimeout(mountGradientJumpCard, delay + 320);
+        }
+        if (card.getAttribute('data-interaction') === 'voicetext') {
+          setTimeout(mountVoiceTextCard, delay + 320);
         }
         obs.unobserve(card);
         // Clear the stagger delay after the reveal so hover stays snappy.
